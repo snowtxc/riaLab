@@ -1,0 +1,12 @@
+
+<h1 mat-dialog-title> {{data.action == "edit" ? "Editar Tipo Documento" : "Agregar nuevo tipo de documento"}}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="data.element.nombre">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button  cdkFocusInitial [mat-dialog-close]="data.element">{{data.action == "edit" ? "Editar" : "Crear"}}</button> 
+</div>

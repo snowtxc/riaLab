@@ -31,4 +31,13 @@ export class TiposDocumentosService {
   public create( newTipoDoc: ITipoDocumento):Observable<any> {
     return this._http.post(environment.apiUrl+"/TiposDeDocumentos", newTipoDoc);
   }
+
+  public update( editTipoDoc: ITipoDocumento):Observable<any> {
+    return this._http.put(environment.apiUrl+"/TiposDeDocumentos/" + editTipoDoc.id, editTipoDoc);
+  }
+
+  public delete( id:number ):Observable<any> {
+    console.log(id);
+    return this._http.delete(environment.apiUrl+"/TiposDeDocumentos/"+id);
+  }
 }
