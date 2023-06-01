@@ -30,7 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TiposDocumentosComponent } from './pages/tipos-documentos/tipos-documentos.component';
 import { AreasComponent } from './pages/areas/areas.component';
 import { TiposIntegrantesComponent } from './pages/tipos-integrantes/tipos-integrantes.component';
-import { LlamadosEstadosPosiblesComponent } from './pages/llamados-estados-posibles/llamados-estados-posibles.component';
+import { LlamadosEstadosPosibles } from './pages/llamados-estados-posibles/llamados-estados-posibles.component';
 import { MatTableModule } from "@angular/material/table";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ActiveTextPipe } from './helpers/pipes/active-text.pipe';
@@ -39,6 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { AreaModalComponent } from './components/area-modal/area-modal.component';
 import { TipoIntegranteModalComponent } from './components/tipo-integrante-modal/tipo-integrante-modal.component';
+import { LlamadoEstadoPosibleModalComponent } from './components/llamado-estado-posible-modal/llamado-estado-posible-modal.component';
 
 @NgModule({
   declarations: [
@@ -48,12 +49,13 @@ import { TipoIntegranteModalComponent } from './components/tipo-integrante-modal
     TiposDocumentosComponent,
     AreasComponent,
     TiposIntegrantesComponent,
-    LlamadosEstadosPosiblesComponent,
+    LlamadosEstadosPosibles,
     ActiveTextPipe,
     TipoDocumentoModalComponent,
     ConfirmModalComponent,
     AreaModalComponent,
     TipoIntegranteModalComponent,
+    LlamadoEstadoPosibleModalComponent,
     
   ],
   imports: [

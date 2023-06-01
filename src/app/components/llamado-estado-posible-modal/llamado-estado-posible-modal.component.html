@@ -1,0 +1,11 @@
+<h1 mat-dialog-title> {{data.action == "edit" ? "Editar Llamado estado posible" : "Agregar nuevo llamado estado posible"}}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="data.element.nombre">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button  cdkFocusInitial [mat-dialog-close]="data.element">{{data.action == "edit" ? "Editar" : "Crear"}}</button> 
+</div>
