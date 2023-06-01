@@ -3,7 +3,7 @@
 }
 
 .app-container {
-    height: 90%;
+    height: 100%;
     margin: 0;
 }  
 .app-sidenav {
@@ -19,5 +19,9 @@
  .list-item-active{
     background-color: grey;
 
+}
+
+.list-item{
+    margin: 15px 0px 0px 0px;
 }
 

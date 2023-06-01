@@ -6,3 +6,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .edit_button {
     background-color: rgb(54, 54, 150) !important;
 }
+
+.container{
+    width: 80%;
+    margin: 20px auto 0px auto;
+   
+}
+
+.loading{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.options{
+    display: flex;
+    justify-content: end;
+    margin: 10px 0px 10px 0px;
+}

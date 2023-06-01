@@ -34,9 +34,11 @@ import { LlamadosEstadosPosiblesComponent } from './pages/llamados-estados-posib
 import { MatTableModule } from "@angular/material/table";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ActiveTextPipe } from './helpers/pipes/active-text.pipe';
-import { TipoDocumentoModalComponent } from './components/add-tipo-documento-modal/tipo-documento-modal.component';
+import { TipoDocumentoModalComponent } from './components/tipo-documento-modal/tipo-documento-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { AreaModalComponent } from './components/area-modal/area-modal.component';
+import { TipoIntegranteModalComponent } from './components/tipo-integrante-modal/tipo-integrante-modal.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     ActiveTextPipe,
     TipoDocumentoModalComponent,
     ConfirmModalComponent,
+    AreaModalComponent,
+    TipoIntegranteModalComponent,
     
   ],
   imports: [

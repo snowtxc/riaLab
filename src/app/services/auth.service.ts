@@ -23,6 +23,18 @@ export class AuthService {
     }));
   }
 
+  public logout():void{
+     this._localStorage.removeToken();
+  }
+
+  public isLogged(): boolean{
+     if(!this._localStorage.getToken()){
+      return false;
+     }
+     return true;
+  }
+
+
   handleErrors(error: HttpErrorResponse): Observable<never>  {
     if (error.status == HttpStatusCode.Unauthorized)
       return throwError('Credenciales invalidas');

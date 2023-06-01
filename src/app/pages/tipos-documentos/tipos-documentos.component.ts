@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TipoDocumentoModalComponent } from 'src/app/components/add-tipo-documento-modal/tipo-documento-modal.component';
+import { TipoDocumentoModalComponent } from 'src/app/components/tipo-documento-modal/tipo-documento-modal.component';
 import { ITipoDocumento } from 'src/app/interfaces/ITipoDocumento';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
 
@@ -34,18 +34,13 @@ export class TiposDocumentosComponent implements OnInit{
     ]
   }
 
-  private newTipoDoc : ITipoDocumento = {
-    id: 0,
-    nombre: '',
-    activo: true
-  }
+
   
   @ViewChild('table', { static: true,read:MatTable }) table:any
 
   constructor(private _tiposDocSrv: TiposDocumentosService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
 
   ngOnInit(): void {
-    this.loading = false;
     this._tiposDocSrv.list(this.paginationObj).subscribe(data =>{
       this.dataSource = data;
       this.loading = false;
