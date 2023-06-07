@@ -5,7 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 
 import { MainComponent } from './pages/main/main.component';
 import { TiposDocumentosComponent } from './pages/tipos-documentos/tipos-documentos.component';
-import { LlamadosEstadosPosiblesComponent } from './pages/llamados-estados-posibles/llamados-estados-posibles.component';
+import { LlamadosEstadosPosibles } from './pages/llamados-estados-posibles/llamados-estados-posibles.component';
 import { AreasComponent } from './pages/areas/areas.component';
 import { TiposIntegrantesComponent } from './pages/tipos-integrantes/tipos-integrantes.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -16,7 +16,7 @@ const routes: Routes = [
     {path: 'tipos-documentos',  component: TiposDocumentosComponent},
     {path: 'tipos-integrantes',  component: TiposIntegrantesComponent},
     {path: 'areas',  component: AreasComponent},
-    {path: 'llamados-estados-posibles',  component: LlamadosEstadosPosiblesComponent},
+    {path: 'llamados-estados-posibles',  component: LlamadosEstadosPosibles},
 
   ],  canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
