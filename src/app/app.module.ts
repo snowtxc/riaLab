@@ -40,6 +40,12 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
 import { AreaModalComponent } from './components/area-modal/area-modal.component';
 import { TipoIntegranteModalComponent } from './components/tipo-integrante-modal/tipo-integrante-modal.component';
 import { LlamadoEstadoPosibleModalComponent } from './components/llamado-estado-posible-modal/llamado-estado-posible-modal.component';
+import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { MatPaginatorModule} from '@angular/material/paginator';
+import { UserModalComponent } from './components/user-modal/user-modal.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+
 
 @NgModule({
   declarations: [
@@ -56,6 +62,9 @@ import { LlamadoEstadoPosibleModalComponent } from './components/llamado-estado-
     AreaModalComponent,
     TipoIntegranteModalComponent,
     LlamadoEstadoPosibleModalComponent,
+    UsuariosComponent,
+    UserModalComponent,
+    ForgotPasswordComponent,
     
   ],
   imports: [
@@ -82,7 +91,10 @@ import { LlamadoEstadoPosibleModalComponent } from './components/llamado-estado-
     MatTooltipModule,
     MatTableModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatPaginatorModule,
+    FlexLayoutModule
+
   
   ],
   providers: [{

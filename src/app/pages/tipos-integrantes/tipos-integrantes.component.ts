@@ -35,7 +35,6 @@ export class TiposIntegrantesComponent {
   constructor(private _tipoIntSrv:TiposIntegrantesService , private _snackBar: MatSnackBar,public dialog: MatDialog){}
 
   ngOnInit(): void {
-    this.loading = false;
     this._tipoIntSrv.list(this.paginationObj).subscribe((data:ITipoIntegrante[]) =>{
       this.dataSource = data;
       this.loading = false;

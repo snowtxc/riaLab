@@ -32,3 +32,15 @@
     padding: 20px;
     margin-top: 20px;
 }
+
+.forgotPassword{
+    margin: 20px 0px 0px 0px;
+    color: white;
+}
+
+
+.forgotPassword:hover{
+    margin-top: 20px;
+    color: rgb(10, 10, 181);
+    cursor: pointer;
+}

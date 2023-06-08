@@ -1,0 +1,67 @@
+<h1 mat-dialog-title> {{data.action == "edit" ? "Editar Tipo Documento" : "Agregar nuevo usuario"}}</h1>
+
+
+<div mat-dialog-content>
+  <div class="form">
+    <div class="form-col-1">
+      <mat-form-field class="col">
+        <mat-label>Tipo de Documento *</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+    
+      <mat-form-field class="col">
+        <mat-label>Documento *</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+    </div>
+
+    <div class="form-col-2">
+      <mat-form-field class="col">
+        <mat-label>Primer Nombre *</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+    
+    
+    
+      <mat-form-field class="col">
+        <mat-label>Segundo Nombre</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+    
+      <mat-form-field class="col">
+        <mat-label>Primer Apellido *</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+    
+    
+      <mat-form-field class="col">
+        <mat-label>Segundo Apellido</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+    </div>
+
+    <div class="form-col-3">
+      <mat-form-field class="col">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Imagen</mat-label>
+        <input matInput [(ngModel)]="data.element.nombre">
+      </mat-form-field>
+
+    </div>
+      
+    
+      
+    
+      
+  </div>
+  
+
+</div>
+<div mat-dialog-actions class="actions">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button  cdkFocusInitial [mat-dialog-close]="data.element">{{data.action == "edit" ? "Editar" : "Crear"}}</button> 
+</div>

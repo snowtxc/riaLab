@@ -5,10 +5,19 @@ import { environment } from 'src/environments/environment.development';
 import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { LocalstorageService } from './localstorage.service';
 
+import { IResponseList } from '../interfaces/IResponse';
+import { IUserDTO } from '../helpers/dtos/IUserDto';
+
+
+
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  
 
   constructor(private http: HttpClient, private _localStorage: LocalstorageService) { }
 
@@ -34,11 +43,44 @@ export class AuthService {
      return true;
   }
 
+  public listUsers(paginationObj: { limit: number,
+    offset: number,
+    id: number,
+    filters: {
+      activo: boolean,
+      nombre: string
+    },
+    orders: string[]}
+    ) : Observable<IResponseList>{
+
+    return this.http.post<IResponseList>(environment.apiUrl+"/Auth/Users",paginationObj);
+  }
+
+  public createUser( newUser: IUserDTO):Observable<any> {
+    return this.http.post(environment.apiUrl+"/Auth/Register", newUser);
+  }
+
+  public updateUser( editUser: IUserDTO):Observable<any> {
+    return this.http.put(environment.apiUrl+"/Auth/Users", editUser);
+  }
+
+  public forgotPassword( email:string ):Observable<any> {
+    return this.http.post(environment.apiUrl+"/Auth/ForgotPassword", {email}).pipe(catchError((err: HttpErrorResponse) => {
+      return this.handleErrors(err);
+   }))
+  }
+
+
 
   handleErrors(error: HttpErrorResponse): Observable<never>  {
     if (error.status == HttpStatusCode.Unauthorized)
       return throwError('Credenciales invalidas');
 
+      console.log(error.error)
+    if(!error.error.status){
+      return throwError(error.error.mensaje);
+
+    }
     return throwError('Un error inesperado ha ocurrido.');
   }
   

@@ -1,0 +1,17 @@
+
+.modalContainer{
+    width: 40%;
+    max-width: 800px;
+}
+.form{
+    max-width: 900px;
+}
+
+.col{
+    margin: 5px;
+}
+
+.actions{
+    display: flex;
+    justify-content: end;
+}
