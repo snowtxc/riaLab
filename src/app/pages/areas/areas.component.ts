@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { AreaModalComponent } from 'src/app/components/area-modal/area-modal.component';
@@ -16,15 +17,21 @@ export class AreasComponent {
   public loading = true;
   displayedColumns: string[] = ['nombre', 'activo', 'actions'];
   dataSource: any[]=  [];
+  pageEvent : PageEvent = {pageIndex:0, pageSize:10, length:0};
+  sortDirection: 'asc' | 'desc' = 'asc';
+  sortField: string = '';
+  totalCount: number = 0;
+  filterValue!:string;
 
+  
   private paginationObj = 
   {
-    limit: 10,
-    offset: 0,
+    limit: this.pageEvent.pageSize,
+    offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: true,
-      nombre: ""
+      activo: null,
+      nombre: "" 
     },
     orders: [
     ]
@@ -35,10 +42,49 @@ export class AreasComponent {
   constructor(private _areaSrv:AreasService , private _snackBar: MatSnackBar,public dialog: MatDialog){}
 
   ngOnInit(): void {
-    this._areaSrv.list(this.paginationObj).subscribe((data:IArea[]) =>{
-      this.dataSource = data;
+    this._areaSrv.list(this.paginationObj).subscribe(data =>{
+      this.dataSource = data.list;
+
       this.loading = false;
     })
+  }
+
+  onPaginateChange(event: PageEvent) {
+    this.pageEvent = event;
+    this.getAreas();
+  }
+
+  getAreas(): void {
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+
+    this.paginationObj = 
+    {
+      ...this.paginationObj,
+      limit: pageSize,
+      offset: offset,
+      filters: {
+        activo:null,
+        nombre:this.filterValue
+      }
+    }
+  
+    this._areaSrv.list(this.paginationObj).subscribe(
+      response => {
+        this.dataSource = response.list;
+        this.totalCount = response.totalCount;
+      },
+      error => {
+        console.log('Hubo un error al recuperar los tipos de estados posibles:', error);
+      }
+    );
+  }
+
+  filtrar(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+    this.filterValue = valor;
+    this.getAreas();
   }
 
   onClickAdd():void{

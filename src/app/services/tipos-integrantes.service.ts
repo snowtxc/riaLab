@@ -15,7 +15,7 @@ export class TiposIntegrantesService {
     offset: number,
     id: number,
     filters: {
-      activo: boolean,
+      activo: boolean | null,
       nombre: string
     },
     orders: string[]}
@@ -23,8 +23,8 @@ export class TiposIntegrantesService {
 
     
     return this._http.post(environment.apiUrl+"/TiposDeIntegrantes/Paged",paginationObj).pipe(map((res:any) =>{
-        const { list } = res;
-        return list;
+        const { list , totalCount} = res;
+        return {list, totalCount};
     }));
   }
 

@@ -16,19 +16,21 @@ export class LlamadosEstadosPosiblesService {
       offset: number,
       id: number,
       filters: {
-        activo: boolean,
+        activo: boolean | null,
         nombre: string
       },
-      orders: string[]}
+      orders: string[
+
+      ]}
       ) {
   
       
       return this._http.post(environment.apiUrl+"/LlamadosEstadosPosibles/Paged",paginationObj).pipe(map((res:any) =>{
-          const { list } = res;
-          console.log(res)
-          return list;
+          const { list , totalCount} = res;
+          return {list, totalCount};
       }));
     }
+
   
     public create( newLlamado: ILlamadosEstadoPosibles):Observable<any> {
       return this._http.post(environment.apiUrl+"/LlamadosEstadosPosibles", newLlamado);
