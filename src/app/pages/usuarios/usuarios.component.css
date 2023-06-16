@@ -5,8 +5,9 @@
 }
 
 .userAvatar{
-    max-width: 80px;
-    border-radius: 60%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
     object-fit: cover;
     margin: 5px 0px 0px 0px;
 }

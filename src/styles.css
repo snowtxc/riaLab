@@ -27,4 +27,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin: 10px 0px 10px 0px;
 }
 
+.input-error{
+    color: 
+    #Ec3343;
+}
+
 

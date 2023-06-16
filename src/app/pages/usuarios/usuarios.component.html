@@ -15,7 +15,7 @@
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width table" #table> 
             <ng-container matColumnDef="imagen">
               <th mat-header-cell *matHeaderCellDef> Imagen </th>
-              <td mat-cell *matCellDef="let element">  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu" class="userAvatar">  </td>
+              <td mat-cell *matCellDef="let element">  <img mat-card-image [src]="element.imagen ? element.imagen : defaultUserAvatarPath" alt="Photo of a Shiba Inu" class="userAvatar">  </td>
             </ng-container>
           
             <!-- Weight Column -->
@@ -26,7 +26,7 @@
     
             <ng-container matColumnDef="segundoNombre">
                 <th mat-header-cell *matHeaderCellDef> Segundo nombre </th>
-                <td mat-cell *matCellDef="let element"> {{element.primerNombre}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.segundoNombre}} </td>
               </ng-container>
     
               <ng-container matColumnDef="primerApellido">
@@ -49,16 +49,15 @@
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef> acciones </th>
               <td mat-cell *matCellDef="let element" [width]="200"> 
-                <!--
-    
+                
                      <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="edit_button" (click)="onEdit(element)">
-                  <mat-icon> border_color</mat-icon>
-                </button>
-                <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" class="remove_button"  (click)="onRemove(element)">
-                  <mat-icon>restore_from_trash</mat-icon>
-                </button>
-                -->
-               
+                        <mat-icon> border_color</mat-icon>
+                      </button>
+                      <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" class="remove_button"  (click)="onRemove(element)">
+                        <mat-icon>restore_from_trash</mat-icon>
+                      </button>
+              
+        
               </td>
             </ng-container>
           
