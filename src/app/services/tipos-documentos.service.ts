@@ -11,12 +11,12 @@ export class TiposDocumentosService {
 
   constructor(private _http : HttpClient) { }
 
-  public list(paginationObj: { limit: number,
-    offset: number,
-    id: number,
+  public list(paginationObj: { limit: number | null, 
+    offset: number |  null,
+    id: number |  null,
     filters: {
-      activo: boolean,
-      nombre: string
+      activo: boolean |  null,
+      nombre: string |  null
     },
     orders: string[]}
     ) {

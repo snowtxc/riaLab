@@ -45,6 +45,9 @@ import { MatPaginatorModule} from '@angular/material/paginator';
 import { UserModalComponent } from './components/user-modal/user-modal.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { ImageAvatarComponent } from './components/image-avatar/image-avatar.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -65,6 +68,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
     UsuariosComponent,
     UserModalComponent,
     ForgotPasswordComponent,
+    ImageAvatarComponent,
     
   ],
   imports: [
@@ -93,7 +97,9 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
     MatProgressSpinnerModule,
     MatDialogModule,
     MatPaginatorModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatGridListModule,
+    MatCheckboxModule
 
   
   ],

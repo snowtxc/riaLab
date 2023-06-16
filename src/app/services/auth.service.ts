@@ -40,6 +40,7 @@ export class AuthService {
      if(!this._localStorage.getToken()){
       return false;
      }
+     //checkear si ha expirado
      return true;
   }
 
@@ -47,7 +48,7 @@ export class AuthService {
     offset: number,
     id: number,
     filters: {
-      activo: boolean,
+      activo?: boolean ,
       nombre: string
     },
     orders: string[]}
@@ -57,11 +58,17 @@ export class AuthService {
   }
 
   public createUser( newUser: IUserDTO):Observable<any> {
-    return this.http.post(environment.apiUrl+"/Auth/Register", newUser);
+    return this.http.post(environment.apiUrl+"/Auth/Register", newUser).pipe(catchError((err: HttpErrorResponse) => {
+      return this.handleErrors(err);
+    }))
+      
+
   }
 
   public updateUser( editUser: IUserDTO):Observable<any> {
-    return this.http.put(environment.apiUrl+"/Auth/Users", editUser);
+    return this.http.put(environment.apiUrl+"/Auth/Users", editUser).pipe(catchError((err: HttpErrorResponse) => {
+      return this.handleErrors(err);
+   }));
   }
 
   public forgotPassword( email:string ):Observable<any> {
@@ -76,7 +83,7 @@ export class AuthService {
     if (error.status == HttpStatusCode.Unauthorized)
       return throwError('Credenciales invalidas');
 
-      console.log(error.error)
+      
     if(!error.error.status){
       return throwError(error.error.mensaje);
 

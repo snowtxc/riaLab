@@ -1,67 +1,101 @@
 <h1 mat-dialog-title> {{data.action == "edit" ? "Editar Tipo Documento" : "Agregar nuevo usuario"}}</h1>
 
 
-<div mat-dialog-content>
-  <div class="form">
-    <div class="form-col-1">
-      <mat-form-field class="col">
-        <mat-label>Tipo de Documento *</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
-    
-      <mat-form-field class="col">
-        <mat-label>Documento *</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
-    </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">  
+  <div mat-dialog-content>
+    <div class="form" >
+      <mat-grid-list cols="12" rowHeight="50px">
+        <mat-grid-tile colspan="3">
+          <mat-checkbox class="example-margin"
+            formControlName="activo"> 
+             Usuario activo
+          </mat-checkbox>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="12" rowHeight="100px">
+        <mat-grid-tile colspan="5">
+          <mat-form-field class="col">
+            <mat-select placeholder="Tipo de documento" formControlName="tipoDocumentoId" >
+              <mat-option *ngFor="let tipoDocumento of data.tiposDocumentos" [value]="tipoDocumento.id">
+                {{ tipoDocumento.nombre }}
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="submit && (form.controls['tipoDocumentoId'].invalid)" class="input-error" >Es requerido</mat-hint>
 
-    <div class="form-col-2">
-      <mat-form-field class="col">
-        <mat-label>Primer Nombre *</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
-    
-    
-    
-      <mat-form-field class="col">
-        <mat-label>Segundo Nombre</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
-    
-      <mat-form-field class="col">
-        <mat-label>Primer Apellido *</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
-    
-    
-      <mat-form-field class="col">
-        <mat-label>Segundo Apellido</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
-    </div>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="5">
+          <mat-form-field class="col">
+            <mat-label>Documento *</mat-label>
+            <input matInput formControlName="documento">
+            <mat-hint *ngIf="submit && (form.controls['documento'].invalid)" class="input-error" >Es requerido</mat-hint>
 
-    <div class="form-col-3">
-      <mat-form-field class="col">
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>Imagen</mat-label>
-        <input matInput [(ngModel)]="data.element.nombre">
-      </mat-form-field>
+          </mat-form-field>
+        </mat-grid-tile>
+       
+        <mat-grid-tile colspan="4">
+          <mat-form-field class="field">
+            <mat-label>Primer Nombre *</mat-label>
+            <input matInput  formControlName="primerNombre">
+            <mat-hint *ngIf="submit && (form.controls['primerNombre'].invalid)" class="input-error" >Es requerido</mat-hint>
 
-    </div>
-      
-    
-      
-    
-      
-  </div>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <mat-form-field class="col">
+            <mat-label>Segundo Nombre</mat-label>
+            <input matInput formControlName="segundoNombre">
+          </mat-form-field>
+        </mat-grid-tile>
   
+      </mat-grid-list>
+  
+      <mat-grid-list cols="12" rowHeight="100px">
+        <mat-grid-tile colspan="4">
+          <mat-form-field class="field">
+            <mat-label>Primer Apellido *</mat-label>
+            <input matInput formControlName="primerApellido">
+            <mat-hint *ngIf="submit && (form.controls['primerApellido'].invalid)" class="input-error" >Es requerido</mat-hint>
+
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <mat-form-field class="field">
+            <mat-label>Segundo Apellido</mat-label>
+            <input matInput  formControlName="segundoApellido">
+          </mat-form-field>
+        </mat-grid-tile>
+  
+      </mat-grid-list>
+  
+      <mat-grid-list cols="12" rowHeight="200px">
+        <mat-grid-tile colspan="6">
+          <mat-form-field class="field">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <mat-hint *ngIf="submit && (form.controls['email'].invalid)" class="input-error" >Email invalido</mat-hint>
+
+          </mat-form-field>
+        </mat-grid-tile>
+  
+        <mat-grid-tile colspan="6" rowHeight="200px">
+          <div class="avatarContainer">
+            <app-image-avatar [imagePath]="imageB64" [size]="20"></app-image-avatar>
+            <button mat-raised-button color="primary" (click)="fileClick($event)">Importar imagen</button>
+            <input type="file" class="fileInput" #fileInput (change)="selectFile($event)" />
+          </div>
+  
+        </mat-grid-tile>
+  
+  
+      </mat-grid-list>
+  
+    </div>
 
 </div>
-<div mat-dialog-actions class="actions">
-  <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button  cdkFocusInitial [mat-dialog-close]="data.element">{{data.action == "edit" ? "Editar" : "Crear"}}</button> 
-</div>
+  <div mat-dialog-actions class="actions">
+    <button mat-button (click)="onNoClick($event)">Cancelar</button>
+    <button type="submit" mat-button cdkFocusInitial >{{data.action == "edit" ? "Editar" :
+      "Crear"}}</button>
+  </div>
+</form>
