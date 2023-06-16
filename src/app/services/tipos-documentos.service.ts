@@ -23,8 +23,8 @@ export class TiposDocumentosService {
 
     
     return this._http.post(environment.apiUrl+"/TiposDeDocumentos/Paged",paginationObj).pipe(map((res:any) =>{
-        const { list } = res;
-        return list;
+        const { list , totalCount} = res;
+        return {list, totalCount};
     }));
   }
 

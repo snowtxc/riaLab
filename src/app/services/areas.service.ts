@@ -16,7 +16,7 @@ export class AreasService {
     offset: number,
     id: number,
     filters: {
-      activo: boolean,
+      activo: boolean | null,
       nombre: string
     },
     orders: string[]}
@@ -24,8 +24,8 @@ export class AreasService {
 
     
     return this._http.post(environment.apiUrl+"/Areas/Paged",paginationObj).pipe(map((res:any) =>{
-        const { list } = res;
-        return list;
+        const { list, totalCount } = res;
+        return {list, totalCount};
     }));
   }
 

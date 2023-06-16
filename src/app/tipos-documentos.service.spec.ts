@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TiposDocumentosService } from './tipos-documentos.service';
+import { TiposDocumentosService } from './services/tipos-documentos.service';
 
 describe('TiposDocumentosService', () => {
   let service: TiposDocumentosService;
@@ -9,6 +9,7 @@ describe('TiposDocumentosService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(TiposDocumentosService);
   });
+  
 
   it('should be created', () => {
     expect(service).toBeTruthy();

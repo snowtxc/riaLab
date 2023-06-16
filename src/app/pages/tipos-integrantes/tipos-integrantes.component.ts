@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-modal.component';
@@ -16,15 +17,21 @@ export class TiposIntegrantesComponent {
   public loading = true;
   displayedColumns: string[] = ['nombre', 'activo', 'actions'];
   dataSource: any[]=  [];
+  pageEvent : PageEvent = {pageIndex:0, pageSize:10, length:0};
+  sortDirection: 'asc' | 'desc' = 'asc';
+  sortField: string = '';
+  totalCount: number = 0;
+  filterValue!:string;
 
+  
   private paginationObj = 
   {
-    limit: 10,
-    offset: 0,
+    limit: this.pageEvent.pageSize,
+    offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: true,
-      nombre: ""
+      activo: null,
+      nombre: "" 
     },
     orders: [
     ]
@@ -35,10 +42,49 @@ export class TiposIntegrantesComponent {
   constructor(private _tipoIntSrv:TiposIntegrantesService , private _snackBar: MatSnackBar,public dialog: MatDialog){}
 
   ngOnInit(): void {
-    this._tipoIntSrv.list(this.paginationObj).subscribe((data:ITipoIntegrante[]) =>{
-      this.dataSource = data;
+    this._tipoIntSrv.list(this.paginationObj).subscribe(data =>{
+      this.dataSource = data.list;
+      this.totalCount = data.totalCount;
       this.loading = false;
     })
+  }
+
+  onPaginateChange(event: PageEvent) {
+    this.pageEvent = event;
+    this.getTiposIntegrantes();
+  }
+
+  getTiposIntegrantes(): void {
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+
+    this.paginationObj = 
+    {
+      ...this.paginationObj,
+      limit: pageSize,
+      offset: offset,
+      filters: {
+        activo:null,
+        nombre:this.filterValue
+      }
+    }
+  
+    this._tipoIntSrv.list(this.paginationObj).subscribe(
+      response => {
+        this.dataSource = response.list;
+        this.totalCount = response.totalCount;
+      },
+      error => {
+        console.log('Hubo un error al recuperar los tipos de estados posibles:', error);
+      }
+    );
+  }
+
+  filtrar(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+    this.filterValue = valor;
+    this.getTiposIntegrantes();
   }
 
   onClickAdd():void{
