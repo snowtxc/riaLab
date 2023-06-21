@@ -100,7 +100,7 @@ export class UsuariosComponent {
         ]
       }
     ).subscribe(data => {
-      this.tiposDocumentos = data;
+      this.tiposDocumentos = data.list;
     })
   }
 

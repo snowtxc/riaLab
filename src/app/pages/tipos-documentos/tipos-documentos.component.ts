@@ -9,6 +9,7 @@ import {MatTable} from '@angular/material/table' //<--you need import MatTable
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-modal.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class TiposDocumentosComponent implements OnInit{
   sortField: string = '';
   totalCount: number = 0;
   filterValue!:string;
+  activoValue:null | boolean = null;
 
   private paginationObj = 
   {
@@ -33,7 +35,7 @@ export class TiposDocumentosComponent implements OnInit{
     offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: null,
+      activo: this.activoValue,
       nombre: "" 
     },
     orders: [
@@ -69,7 +71,7 @@ export class TiposDocumentosComponent implements OnInit{
       limit: pageSize,
       offset: offset,
       filters: {
-        activo:null,
+        activo:this.activoValue,
         nombre:this.filterValue
       }
     }
@@ -85,13 +87,19 @@ export class TiposDocumentosComponent implements OnInit{
     );
   }
 
-  
-
-
   filtrar(event: Event) {
     const valor = (event.target as HTMLInputElement).value;
     this.filterValue = valor;
     this.getTiposDeDocumento();
+  }
+
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.source.value;
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
   }
 
   onClickAdd():void{
