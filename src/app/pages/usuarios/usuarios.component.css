@@ -11,3 +11,12 @@
     object-fit: cover;
     margin: 5px 0px 0px 0px;
 }
+
+.example-margin {
+    margin-right: 2%;
+}
+
+.input {
+    margin-right: 2%;
+    border-radius: 5px;
+}

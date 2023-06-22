@@ -12,6 +12,7 @@ import { IUser } from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
 import { PersonasService } from 'src/app/services/personas.service';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-usuarios',
@@ -26,14 +27,20 @@ export class UsuariosComponent {
   dataSource: any[] = [];
   countTotal: number = 50;
   public tiposDocumentos: ITipoDocumento[] = [];
+  pageEvent : PageEvent = {pageIndex:0, pageSize:10, length:0};
+  filterValue!:string;
+  activoValue:null | boolean = null;
+  totalCount: number = 0;
+  sortDirection: 'asc' | 'desc' = 'asc';
+  sortField: string = '';
 
   public paginationObj =
     {
-      limit: 10,
-      offset: 0,
+      limit: this.pageEvent.pageSize,
+    offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
       id: 0,
       filters: {
-        activo: undefined,
+        activo: this.activoValue,
         nombre: ""
       },
       orders: [
@@ -60,6 +67,49 @@ export class UsuariosComponent {
     this.listUsers();
   }
 
+  getUsuarios(): void {
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+
+    this.paginationObj = 
+    {
+      ...this.paginationObj,
+      limit: pageSize,
+      offset: offset,
+      filters: {
+        activo:this.activoValue,
+        nombre:this.filterValue
+      }
+    }
+  
+    this._authSrv.listUsers(this.paginationObj).subscribe(
+      response => {
+        this.dataSource = response.list;
+        this.totalCount = response.totalCount;
+      },
+      error => {
+        console.log('Hubo un error al recuperar los tipos :', error);
+      }
+    );
+  }
+
+  filtrar(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+    this.filterValue = valor;
+    this.listUsers();
+  }
+
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.checked;
+    console.log(valor)
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
+    this.getUsuarios()
+  }
 
   listUsers() {
     this.loading = true;
@@ -81,7 +131,6 @@ export class UsuariosComponent {
       this.paginationObj.limit = data.limit,
       this.paginationObj.offset = data.offset;
       this.countTotal = data.totalCount;
-
       this.loading = false;
     })
   }

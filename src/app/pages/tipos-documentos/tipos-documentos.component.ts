@@ -94,12 +94,14 @@ export class TiposDocumentosComponent implements OnInit{
   }
 
   changeActivo(event: MatCheckboxChange) {
-    const valor = event.source.value;
+    const valor = event.checked;
+    console.log(valor)
     if (valor) {
       this.activoValue = true;
     } else {
       this.activoValue = null;
     }
+    this.getTiposDeDocumento();
   }
 
   onClickAdd():void{

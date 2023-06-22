@@ -42,22 +42,33 @@
         <mat-nav-list>
             <mat-list-item  routerLink="/tipos-documentos"
                  routerLinkActive="list-item-active" class="list-item">
-                <mat-icon>assignment</mat-icon><span>Tipos Documentos</span>
+                 <button mat-menu-item>
+                    <mat-icon>assignment</mat-icon>
+                    <span>Tipos Documentos</span>
+                 </button>
             </mat-list-item>
             <mat-list-item routerLink="/areas" class="list-item">
+                <button mat-menu-item>
                 <mat-icon>dashboard</mat-icon><span>Áreas</span>
+                </button>
             </mat-list-item>
 
             <mat-list-item routerLink="/tipos-integrantes"  class="list-item">
+                <button mat-menu-item>
                 <mat-icon>supervised_user_circle</mat-icon><span>Tipo Integrantes</span>
+                </button>
             </mat-list-item>
 
             <mat-list-item routerLink="/llamados-estados-posibles"  class="list-item">
+                <button mat-menu-item>
                 <mat-icon>work icon</mat-icon><span>Llamados Estados Posibles</span>
+                </button>
             </mat-list-item>
 
             <mat-list-item routerLink="/usuarios"  class="list-item">
+                <button mat-menu-item>
                 <mat-icon>supervised_user_circle</mat-icon><span>Usuarios</span>
+                </button>
             </mat-list-item>
 
         </mat-nav-list>

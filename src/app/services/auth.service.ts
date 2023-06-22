@@ -48,7 +48,7 @@ export class AuthService {
     offset: number,
     id: number,
     filters: {
-      activo?: boolean ,
+      activo?: boolean | null,
       nombre: string
     },
     orders: string[]}
@@ -61,7 +61,6 @@ export class AuthService {
     return this.http.post(environment.apiUrl+"/Auth/Register", newUser).pipe(catchError((err: HttpErrorResponse) => {
       return this.handleErrors(err);
     }))
-      
 
   }
 

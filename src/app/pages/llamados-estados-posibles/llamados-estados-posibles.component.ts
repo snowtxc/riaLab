@@ -7,6 +7,7 @@ import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-
 import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles.service';
 import { LlamadoEstadoPosibleModalComponent } from 'src/app/components/llamado-estado-posible-modal/llamado-estado-posible-modal.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class LlamadosEstadosPosibles implements OnInit{
   sortField: string = '';
   totalCount: number = 0;
   filterValue!:string;
+  activoValue:null | boolean = null;
 
   
   private paginationObj = 
@@ -32,7 +34,7 @@ export class LlamadosEstadosPosibles implements OnInit{
     offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: null,
+      activo: this.activoValue,
       nombre: "" 
     },
     orders: [
@@ -68,7 +70,7 @@ export class LlamadosEstadosPosibles implements OnInit{
       limit: pageSize,
       offset: offset,
       filters: {
-        activo:null,
+        activo: this.activoValue,
         nombre:this.filterValue
       }
     }
@@ -87,6 +89,17 @@ export class LlamadosEstadosPosibles implements OnInit{
   filtrar(event: Event) {
     const valor = (event.target as HTMLInputElement).value;
     this.filterValue = valor;
+    this.getEstadosPosibles();
+  }
+
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.checked;
+    console.log(valor)
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
     this.getEstadosPosibles();
   }
 

@@ -7,6 +7,7 @@ import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-
 import { TipoIntegranteModalComponent } from 'src/app/components/tipo-integrante-modal/tipo-integrante-modal.component';
 import { ITipoIntegrante } from 'src/app/interfaces/ITipoIntegrante';
 import { TiposIntegrantesService } from 'src/app/services/tipos-integrantes.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-tipos-integrantes',
@@ -22,6 +23,7 @@ export class TiposIntegrantesComponent {
   sortField: string = '';
   totalCount: number = 0;
   filterValue!:string;
+  activoValue:null | boolean = null;
 
   
   private paginationObj = 
@@ -30,7 +32,7 @@ export class TiposIntegrantesComponent {
     offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: null,
+      activo: this.activoValue,
       nombre: "" 
     },
     orders: [
@@ -65,7 +67,7 @@ export class TiposIntegrantesComponent {
       limit: pageSize,
       offset: offset,
       filters: {
-        activo:null,
+        activo:this.activoValue,
         nombre:this.filterValue
       }
     }
@@ -84,6 +86,17 @@ export class TiposIntegrantesComponent {
   filtrar(event: Event) {
     const valor = (event.target as HTMLInputElement).value;
     this.filterValue = valor;
+    this.getTiposIntegrantes();
+  }
+
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.checked;
+    console.log(valor)
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
     this.getTiposIntegrantes();
   }
 
