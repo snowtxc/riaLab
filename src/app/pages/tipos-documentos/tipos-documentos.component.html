@@ -5,7 +5,7 @@
 
 <div class="container" *ngIf="!loading">
   <div class="options">
-    <input matInput (keyup)="filtrar($event)" placeHolder="Nombre">
+    <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre">
     <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="onClickAdd()">
       <mat-icon>add</mat-icon>
     </button>
