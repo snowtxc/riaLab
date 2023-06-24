@@ -49,7 +49,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { ImageAvatarComponent } from './components/image-avatar/image-avatar.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserRolesComponent } from './components/user-roles/user-roles.component';
-
+import { IsGrantedDirective } from './helpers/directive/is-granted.directive';
+import { NotFoundComponent } from './pages/not-found-component/not-found-component.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -66,11 +68,13 @@ import { UserRolesComponent } from './components/user-roles/user-roles.component
     AreaModalComponent,
     TipoIntegranteModalComponent,
     LlamadoEstadoPosibleModalComponent,
-    UsuariosComponent,
+    UsuariosComponent, 
     UserModalComponent,
     ForgotPasswordComponent,
     ImageAvatarComponent,
-    UserRolesComponent,    
+    UserRolesComponent,
+    IsGrantedDirective,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +104,8 @@ import { UserRolesComponent } from './components/user-roles/user-roles.component
     MatPaginatorModule,
     FlexLayoutModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressBarModule
 
   
   ],

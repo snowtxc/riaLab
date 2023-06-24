@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpStatusCode } from '@angular/common/http';
@@ -7,6 +7,7 @@ import { LocalstorageService } from './localstorage.service';
 
 import { IResponseList } from '../interfaces/IResponse';
 import { IUserDTO } from '../helpers/dtos/IUserDto';
+import { IUser } from '../interfaces/IUser';
 
 
 
@@ -17,23 +18,45 @@ import { IUserDTO } from '../helpers/dtos/IUserDto';
 })
 export class AuthService {
 
+  private userSubject: BehaviorSubject<IUser | null>;
+  public user: Observable<IUser | null>;
+
+
   
 
-  constructor(private http: HttpClient, private _localStorage: LocalstorageService) { }
+  constructor(private http: HttpClient, private _localStorage: LocalstorageService) {
+        this.userSubject = new BehaviorSubject(_localStorage.getUserData());
+        this.user = this.userSubject.asObservable();
+   }
+
+  public get userValue() {
+    return this.userSubject.value;
+  }
 
   public login(username:string ,password: string):Observable<any>{
      return this.http.post(environment.apiUrl+"/Auth/Login", {username, password}).pipe(catchError((err: HttpErrorResponse) => {
         return this.handleErrors(err);
      })).pipe(map((data: any ) =>{
-       const { token } = data;
+       console.log(data);
+       const { token, roles,idUsuario,email, documento,imagen,nombre } = data;
+
        this._localStorage.setToken(token);
+       this._localStorage.setUserData({
+         nombre,
+         email,
+         documento,
+         idUsuario,
+         roles,
+         imagen
+       });
        return data;
      
     }));
-  }
+  }  
 
   public logout():void{
      this._localStorage.removeToken();
+     this._localStorage.removeUserData();
   }
 
   public isLogged(): boolean{

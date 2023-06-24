@@ -3,13 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { ITipoDocumento } from '../interfaces/ITipoDocumento';
 import { environment } from 'src/environments/environment.development';
 import { Observable, map } from 'rxjs';
+import { PermissionsManagerService } from './permissions.service';
+import { Role } from '../helpers/enums/roles.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TiposDocumentosService {
 
-  constructor(private _http : HttpClient) { }
+
+
+  constructor(private _http : HttpClient) {
+    
+   }
 
   public list(paginationObj: { limit: number | null, 
     offset: number |  null,
