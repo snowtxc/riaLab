@@ -48,6 +48,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import {MatGridListModule} from '@angular/material/grid-list';
 import { ImageAvatarComponent } from './components/image-avatar/image-avatar.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { UserRolesComponent } from './components/user-roles/user-roles.component';
 
 
 @NgModule({
@@ -69,7 +70,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     UserModalComponent,
     ForgotPasswordComponent,
     ImageAvatarComponent,
-    
+    UserRolesComponent,    
   ],
   imports: [
     BrowserModule,

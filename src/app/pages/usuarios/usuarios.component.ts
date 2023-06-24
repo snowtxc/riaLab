@@ -5,6 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-modal.component';
 import { UserModalComponent } from 'src/app/components/user-modal/user-modal.component';
+import { UserRolesComponent } from 'src/app/components/user-roles/user-roles.component';
+
 import { IUserDTO } from 'src/app/helpers/dtos/IUserDto';
 import { IResponseList } from 'src/app/interfaces/IResponse';
 import { ITipoDocumento } from 'src/app/interfaces/ITipoDocumento';
@@ -63,6 +65,7 @@ export class UsuariosComponent {
 
   listUsers() {
     this.loading = true;
+    console.log(this.paginationObj);
     this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
       this.dataSource = data.list.map((user: IUser) => {
         return {
@@ -74,7 +77,8 @@ export class UsuariosComponent {
           segundoApellido: user.persona.segundoApellido ? user.persona.segundoApellido : '-',
           email: user.email,
           persona: user.persona,
-          activo: user.persona.activo
+          activo: user.persona.activo,
+          roles: user.roles
         }
       })
 
@@ -100,7 +104,7 @@ export class UsuariosComponent {
         ]
       }
     ).subscribe(data => {
-      this.tiposDocumentos = data;
+      this.tiposDocumentos = data.list;
     })
   }
 
@@ -115,6 +119,21 @@ export class UsuariosComponent {
   }
 
 
+  onViewRoles(element: IUser): void {
+    const { id } = element;
+    const dialogRef = this.dialog.open(UserRolesComponent, { data: { userData: element} });
+    dialogRef.componentInstance.addRoleEmit.subscribe((roleId) =>{
+        const indexUser = this.dataSource.findIndex(user => user.id == element.id);
+        this.dataSource[indexUser].roles.unshift(roleId);
+    })
+
+    dialogRef.componentInstance.removeRoleEmit.subscribe((roleId) =>{
+      const indexUser = this.dataSource.findIndex(user => user.id == element.id);
+      const indexRole = this.dataSource[indexUser].roles.findIndex((role:any) => role == roleId);
+      this.dataSource[indexUser].roles.splice(indexRole,1)
+    })
+  }
+
   onEdit(element: IUser): void {
     const dialogRef = this.dialog.open(UserModalComponent, { data: { element: { ...element },tiposDocumentos: this.tiposDocumentos, action: "edit" , userId: element.id} });
     dialogRef.afterClosed().subscribe(result => {
@@ -128,26 +147,11 @@ export class UsuariosComponent {
             panelClass: ['red-snackbar'],
           });
       }
-    });
+  });
  
   }
 
-onRemove(element : IUser){
-  const title =  `Eliminar Usuario`;
-  const text  = `Seguro deseas eliminar el usuario  con documento ${element.persona.documento}  ?`;
 
-  const dialogRef = this.dialog.open(ConfirmModalComponent,{data:{ title, text }});
-  dialogRef.afterClosed().subscribe(confirm => {
-    if(confirm){
-      this._personaSrv.delete(element.id).subscribe(data =>{
-          console.log(data);
-
-      }, error => {
-        console.log(error)
-      });
-    }
-  });
-}
 }
 
 

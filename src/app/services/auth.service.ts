@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
-import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { LocalstorageService } from './localstorage.service';
 
 import { IResponseList } from '../interfaces/IResponse';
@@ -76,6 +76,28 @@ export class AuthService {
       return this.handleErrors(err);
    }))
   }
+
+
+  public getRoles():Observable<string[]>{
+    return this.http.get<string[]>(environment.apiUrl+"/Auth/Users/Roles");
+  }
+
+
+  public addRoleToUser(userId:string, roleId:string):Observable<any>{
+    return this.http.post(environment.apiUrl+"/Auth/Users/UserRoles", {userId, roleId}).pipe(catchError((err: HttpErrorResponse) => {
+      return this.handleErrors(err);
+   }));
+  }
+
+  public removeRoleToUser(userId:string, roleId:string):Observable<any>{
+    const body = {
+      userId,
+      roleId
+    }
+    return this.http.request("delete" ,environment.apiUrl+"/Auth/Users/UserRoles" , {body: body}).pipe(catchError((err: HttpErrorResponse) => {
+      return this.handleErrors(err);
+   }));;
+  }  
 
 
 

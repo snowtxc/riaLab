@@ -1,0 +1,25 @@
+.userRolesContainer{
+    min-width: 500px;
+}
+
+.containerBtnNewRol{
+    display: flex;
+    justify-content: end; 
+}
+
+
+.btnAddRole{
+    margin: 0px 0px 0px 5px;
+    padding: 24px;
+}
+
+.table{
+    margin-top: 15px;
+}
+
+.cardHeaderContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
