@@ -26,7 +26,7 @@ export class UsuariosComponent {
   public loading = true;
   displayedColumns: string[] = ['imagen', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'email', "actions"];
   dataSource: any[] = [];
-  countTotal: number = 50;
+  countTotal: number = 0;
   public tiposDocumentos: ITipoDocumento[] = [];
 
   public paginationObj =
@@ -36,7 +36,12 @@ export class UsuariosComponent {
       id: 0,
       filters: {
         activo: undefined,
-        nombre: ""
+        nombre: "",
+        idUsuario: "",
+        username: "",
+        email: "",
+        documento: ""
+        
       },
       orders: [
       ]
@@ -65,8 +70,9 @@ export class UsuariosComponent {
 
   listUsers() {
     this.loading = true;
-    console.log(this.paginationObj);
     this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
+      console.log(this.paginationObj);
+      console.log(data);
       this.dataSource = data.list.map((user: IUser) => {
         return {
           id: user.id,
@@ -82,6 +88,7 @@ export class UsuariosComponent {
         }
       })
 
+      console.log(data);
       this.paginationObj.limit = data.limit,
       this.paginationObj.offset = data.offset;
       this.countTotal = data.totalCount;

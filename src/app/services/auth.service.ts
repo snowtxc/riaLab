@@ -44,12 +44,19 @@ export class AuthService {
      return true;
   }
 
-  public listUsers(paginationObj: { limit: number,
+  public listUsers(paginationObj: {
+    limit: number,
     offset: number,
     id: number,
+    
     filters: {
       activo?: boolean ,
-      nombre: string
+      nombre?: string,
+      idUsuario?: string,
+      username?: string,
+      email?: string,
+      documento?: string
+        
     },
     orders: string[]}
     ) : Observable<IResponseList>{
