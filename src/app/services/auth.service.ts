@@ -129,6 +129,30 @@ export class AuthService {
    }));;
   }  
 
+ 
+  public resetPassword(password:string, confirmPassword:string, email: string, token: string){
+    return this.http.post(environment.apiUrl+"/Auth/ResetPassword", {password, confirmPassword, email, token}).pipe(catchError((response: HttpErrorResponse) => {
+      const { error } = response;
+      if (error.InvalidToken){
+        return throwError('Token caducado, vuelve a pedir que te envien un correo para restablecerla');
+      }
+
+      if(error.PasswordRequiresLower){
+        return throwError('La password debe contener al menos una letra minuscula');
+
+      }
+
+      if(error.PasswordRequiresNonAlphanumeric){
+        return throwError('La password debe contener al menos un caracter no alfa numerico($@!.#), etc');
+
+      }
+
+      return throwError('Ha ocurrido un error inesperado');
+
+   }));
+
+  }
+
 
 
   handleErrors(error: HttpErrorResponse): Observable<never>  {

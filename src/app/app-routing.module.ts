@@ -14,6 +14,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { RoleGuard } from './guards/role-guard.guard';
 import { Role } from './helpers/enums/roles.enum';
 import { NotFoundComponent } from './pages/not-found-component/not-found-component.component';
+import { RestorePasswordComponent } from './pages/restore-password/restore-password.component';
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
     {path: '', redirectTo: 'tipos-documentos', pathMatch: 'full'},
@@ -29,6 +30,7 @@ const routes: Routes = [
   ],  canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'forgot-password',  component: ForgotPasswordComponent},
+  {path: 'restore-password',  component: RestorePasswordComponent},
   { path: '**', redirectTo: '/404', pathMatch: 'full' },
   { path: '404', component: NotFoundComponent }, 
 

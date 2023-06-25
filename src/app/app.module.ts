@@ -52,6 +52,7 @@ import { UserRolesComponent } from './components/user-roles/user-roles.component
 import { IsGrantedDirective } from './helpers/directive/is-granted.directive';
 import { NotFoundComponent } from './pages/not-found-component/not-found-component.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { RestorePasswordComponent } from './pages/restore-password/restore-password.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     UserRolesComponent,
     IsGrantedDirective,
     NotFoundComponent,
+    RestorePasswordComponent,
   ],
   imports: [
     BrowserModule,
