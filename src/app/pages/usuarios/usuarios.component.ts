@@ -14,6 +14,7 @@ import { IUser } from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
 import { PersonasService } from 'src/app/services/personas.service';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
+import { Role } from 'src/app/helpers/enums/roles.enum';
 
 @Component({
   selector: 'app-usuarios',
@@ -28,6 +29,9 @@ export class UsuariosComponent {
   dataSource: any[] = [];
   countTotal: number = 0;
   public tiposDocumentos: ITipoDocumento[] = [];
+
+  roles :  typeof Role = Role;
+
 
   public paginationObj =
     {

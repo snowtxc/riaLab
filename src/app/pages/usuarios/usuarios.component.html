@@ -4,11 +4,11 @@
 </div>
 
 
-<div class="container">
+<div class="container" >
     <div class="superior">
-        <button mat-raised-button color="primary" (click)="onClickAdd()">
+        <button mat-raised-button color="primary" (click)="onClickAdd()" *appIsGranted="[roles.ADMIN]">
             <mat-icon>add</mat-icon>
-            Agregar nuevo usuario
+            Agregar nuevo usuario   
         </button>
     </div>
     <div class="mat-elevation-z8">
