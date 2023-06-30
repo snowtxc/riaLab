@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { PersonasService } from 'src/app/services/personas.service';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Role } from 'src/app/helpers/enums/roles.enum';
 
 @Component({
   selector: 'app-usuarios',
@@ -35,6 +36,9 @@ export class UsuariosComponent {
   totalCount: number = 0;
   sortDirection: 'asc' | 'desc' = 'asc';
   sortField: string = '';
+
+  roles :  typeof Role = Role;
+
 
   public paginationObj =
     {

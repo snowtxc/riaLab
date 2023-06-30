@@ -5,7 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-modal.component';
 import { TipoIntegranteModalComponent } from 'src/app/components/tipo-integrante-modal/tipo-integrante-modal.component';
+import { Role } from 'src/app/helpers/enums/roles.enum';
 import { ITipoIntegrante } from 'src/app/interfaces/ITipoIntegrante';
+import { PermissionsManagerService } from 'src/app/services/permissions.service';
 import { TiposIntegrantesService } from 'src/app/services/tipos-integrantes.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
@@ -38,13 +40,21 @@ export class TiposIntegrantesComponent {
     orders: [
     ]
   }
-  
+
+  disabledBtnEdit: boolean = false;
+  disabledBtnDelete: boolean = false;
+
+
   @ViewChild('table', { static: true,read:MatTable }) table:any
 
-  constructor(private _tipoIntSrv:TiposIntegrantesService , private _snackBar: MatSnackBar,public dialog: MatDialog){}
+  constructor(private _tipoIntSrv:TiposIntegrantesService , private _snackBar: MatSnackBar,public dialog: MatDialog,private permissionSrv:PermissionsManagerService){
+    this.disabledBtnDelete = !permissionSrv.isGranted([Role.ADMIN]); 
+    this.disabledBtnEdit = !permissionSrv.isGranted([Role.ADMIN]);  
+
+  }
 
   ngOnInit(): void {
-    this._tipoIntSrv.list(this.paginationObj).subscribe(data =>{
+    this._tipoIntSrv.list(this.paginationObj).subscribe(data =>{ 
       this.dataSource = data.list;
       this.totalCount = data.totalCount;
       this.loading = false;

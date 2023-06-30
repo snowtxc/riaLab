@@ -1,0 +1,23 @@
+.field{
+    width: 100%;
+    margin: 10px;
+}
+
+
+
+
+.btnContainer{
+    display: flex;
+    justify-content: end;
+}
+
+.headerCard{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 0px 10px 0px;
+}
+
+.cardInside{
+    margin: 1rem 0px 0px 0px;
+}

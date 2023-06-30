@@ -11,6 +11,9 @@ import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-
 import { PageEvent } from '@angular/material/paginator';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
+import { Role } from 'src/app/helpers/enums/roles.enum';
+import { PermissionsManagerService } from 'src/app/services/permissions.service';
+
 
 @Component({
   selector: 'app-tipos-documentos',
@@ -29,6 +32,9 @@ export class TiposDocumentosComponent implements OnInit{
   filterValue!:string;
   activoValue:null | boolean = null;
 
+  roles : typeof Role = Role;
+
+   
   private paginationObj = 
   {
     limit: this.pageEvent.pageSize,
@@ -42,9 +48,16 @@ export class TiposDocumentosComponent implements OnInit{
     ]
   }
 
+  
+  disabledBtnEdit : boolean = false;
+  disabledBtnDelete : boolean = false;
+
   @ViewChild('table', { static: true,read:MatTable }) table:any
 
-  constructor(private _tiposDocSrv: TiposDocumentosService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
+  constructor(private _tiposDocSrv: TiposDocumentosService, private _snackBar: MatSnackBar,public dialog: MatDialog,private permissionSrv:PermissionsManagerService){
+      this.disabledBtnDelete = !permissionSrv.isGranted([Role.ADMIN]);
+      this.disabledBtnEdit = !permissionSrv.isGranted([Role.ADMIN]);  
+  }
 
   ngOnInit(): void {
     this._tiposDocSrv.list(this.paginationObj).subscribe(data =>{
