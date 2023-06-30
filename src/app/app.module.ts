@@ -56,6 +56,10 @@ import { RestorePasswordComponent } from './pages/restore-password/restore-passw
 import { HomeComponent } from './pages/home/home.component';
 import { NuevoLlamadoComponent } from './pages/nuevo-llamado/nuevo-llamado.component';
 import { PostulanteModalComponent } from './components/postulante-modal/postulante-modal.component';
+import { ResponsabilidadesComponent } from './pages/responsabilidades/responsabilidades.component';
+import { ResponsabilidadesModalComponent } from './components/responsabilidades-modal/responsabilidades-modal.component';
+import { FiltroModalComponent } from './components/filtro-modal/filtro-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -83,6 +87,9 @@ import { PostulanteModalComponent } from './components/postulante-modal/postulan
     HomeComponent,
     NuevoLlamadoComponent,
     PostulanteModalComponent,
+    ResponsabilidadesComponent,
+    ResponsabilidadesModalComponent,
+    FiltroModalComponent,    
   ],
   imports: [
     BrowserModule,

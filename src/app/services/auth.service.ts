@@ -73,7 +73,7 @@ export class AuthService {
     id: number,
     
     filters: {
-      activo?: boolean ,
+      activo?: boolean | null ,
       nombre?: string,
       idUsuario?: string,
       username?: string,
@@ -91,7 +91,6 @@ export class AuthService {
     return this.http.post(environment.apiUrl+"/Auth/Register", newUser).pipe(catchError((err: HttpErrorResponse) => {
       return this.handleErrors(err);
     }))
-      
 
   }
 

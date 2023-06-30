@@ -2,13 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TipoDocumentoModalComponent } from 'src/app/components/tipo-documento-modal/tipo-documento-modal.component';
 import { ITipoDocumento } from 'src/app/interfaces/ITipoDocumento';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
-
 import { MatDialog } from '@angular/material/dialog';
-
 import {MatTable} from '@angular/material/table' //<--you need import MatTable
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-modal.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { Role } from 'src/app/helpers/enums/roles.enum';
 import { PermissionsManagerService } from 'src/app/services/permissions.service';
@@ -29,6 +28,7 @@ export class TiposDocumentosComponent implements OnInit{
   sortField: string = '';
   totalCount: number = 0;
   filterValue!:string;
+  activoValue:null | boolean = null;
 
   roles : typeof Role = Role;
 
@@ -39,7 +39,7 @@ export class TiposDocumentosComponent implements OnInit{
     offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: null,
+      activo: this.activoValue,
       nombre: "" 
     },
     orders: [
@@ -67,7 +67,6 @@ export class TiposDocumentosComponent implements OnInit{
 
   onPaginateChange(event: PageEvent) {
     this.pageEvent = event;
-
     this.getTiposDeDocumento();
   }
 
@@ -82,7 +81,7 @@ export class TiposDocumentosComponent implements OnInit{
       limit: pageSize,
       offset: offset,
       filters: {
-        activo:null,
+        activo:this.activoValue,
         nombre:this.filterValue
       }
     }
@@ -98,28 +97,33 @@ export class TiposDocumentosComponent implements OnInit{
     );
   }
 
-  
-
-
   filtrar(event: Event) {
     const valor = (event.target as HTMLInputElement).value;
     this.filterValue = valor;
     this.getTiposDeDocumento();
   }
 
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.checked;
+    console.log(valor)
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
+    this.getTiposDeDocumento();
+  }
+
   onClickAdd():void{
-    const dialogRef = this.dialog.open(TipoDocumentoModalComponent,{data:{element:{nombre:""}, action:"create"}});
+    const tipoDocumento: ITipoDocumento = {
+      id: 0,
+      nombre: '',
+      activo: false,
+    }
+    const dialogRef = this.dialog.open(TipoDocumentoModalComponent,{data:{element:{...tipoDocumento},id:0, action:"create"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-          this._tiposDocSrv.create(result).subscribe(data =>{
-          this.dataSource.push(data)
-          this.table.renderRows()
-          this._snackBar.open("Tipo de documento creado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'],
-    
-          });
-        })
+          this.getTiposDeDocumento();
       }
     });
   }
@@ -142,22 +146,10 @@ export class TiposDocumentosComponent implements OnInit{
   }
 
   onEdit(element:ITipoDocumento):void{
-    const dialogRef = this.dialog.open(TipoDocumentoModalComponent,{data:{ element: {id: element.id, nombre: element.nombre, activo: element.activo}, action:"edit"}});
+    const dialogRef = this.dialog.open(TipoDocumentoModalComponent,{data:{ element: {...element},id:element.id, action:"edit"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this._tiposDocSrv.update(result).subscribe(data =>{
-          const index = this.dataSource.findIndex(item => item.id ==  data.id);
-          this.dataSource[index] = data;
-          this._snackBar.open("Tipo de documento editado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'], 
-    
-          });
-          this.table.renderRows()
-
-        }, error => {
-          console.log(error)
-        });
+        this.getTiposDeDocumento();
       }
     });
   }

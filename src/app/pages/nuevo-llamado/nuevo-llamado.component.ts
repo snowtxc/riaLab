@@ -48,9 +48,10 @@ export class NuevoLlamadoComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      this._areaSrv.listAll().subscribe(data =>{
-        this.areas = data;
-      })
+      // this._areaSrv.listAll().subscribe(data =>{
+      //   console.log(data)
+      //   this.areas = data;
+      // })
   }
 
   onSubmit(){

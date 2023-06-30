@@ -10,6 +10,7 @@ import { AreasComponent } from './pages/areas/areas.component';
 import { TiposIntegrantesComponent } from './pages/tipos-integrantes/tipos-integrantes.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { ResponsabilidadesComponent } from './pages/responsabilidades/responsabilidades.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { RoleGuard } from './guards/role-guard.guard';
 import { Role } from './helpers/enums/roles.enum';
@@ -34,6 +35,7 @@ const routes: Routes = [
       data: {
         roles: [Role.ADMIN]
       }},
+    {path: 'responsabilidades',  component: ResponsabilidadesComponent},
 
   ],  canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
