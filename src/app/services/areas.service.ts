@@ -41,10 +41,17 @@ export class AreasService {
     return this._http.delete(environment.apiUrl+"/Areas/"+id);
   }
 
-  public listAll( ):Observable<any> {
-    return this._http.post(environment.apiUrl+"/Areas/Paged",{page:-1, limit:-1, offset:0, id:0, orders:[], filters:{activo:null, nombre:""}}).pipe(map((res:any) =>{
+  public listAll(): Observable<any>{
+    return this._http.post(environment.apiUrl+"/Areas/Paged",{
+      limit: -1,
+      offset: 0,
+      filters: {
+        activo: null,
+        nombre: ""
+      }
+    }).pipe(map((res:any) =>{
       const { list } = res;
-      return {list};
+      return list;
   }));
   }
   
