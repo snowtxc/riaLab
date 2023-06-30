@@ -16,6 +16,7 @@ import { PersonasService } from 'src/app/services/personas.service';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Role } from 'src/app/helpers/enums/roles.enum';
+import { FiltroModalComponent } from 'src/app/components/filtro-modal/filtro-modal.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -47,14 +48,19 @@ export class UsuariosComponent {
       id: 0,
       filters: {
         activo: this.activoValue,
-        nombre: "",
-        idUsuario: "",
-        username: "",
-        email: "",
-        documento: ""
-        
+        nombre: '',
+        idUsuario: '',
+        username: '',
+        email: '',
+        documento: '',
       },
       orders: [
+        "activo",
+        "nombre",
+        "idUsuario",
+        "userName",
+        "emai",
+        "documento"
       ]
     }
 
@@ -67,7 +73,7 @@ export class UsuariosComponent {
      private _personaSrv: PersonasService) { }
 
   ngOnInit(): void {
-    this.listUsers();
+    this.getUsuarios();
     this.listTiposDocumentos();
   }
 
@@ -79,40 +85,38 @@ export class UsuariosComponent {
   }
 
   getUsuarios(): void {
-    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
-    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
-    const offset = pageIndex * pageSize;
+    this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
+      console.log(this.paginationObj);
+      console.log(data);
+      this.dataSource = data.list.map((user: IUser) => {
+        return {
+          id: user.id,
+          imagen: user.imagen,
+          primerNombre: user.persona.primerNombre,
+          segundoNombre: user.persona.segundoNombre ? user.persona.segundoNombre : '-',
+          primerApellido: user.persona.primerApellido ? user.persona.primerApellido : '-',
+          segundoApellido: user.persona.segundoApellido ? user.persona.segundoApellido : '-',
+          email: user.email,
+          persona: user.persona,
+          activo: user.persona.activo,
+          roles: user.roles
+        }
+      })
 
-    this.paginationObj = 
-    {
-      ...this.paginationObj,
-      limit: pageSize,
-      offset: offset,
-      filters: {
-        activo:this.activoValue,
-        nombre:this.filterValue,
-        idUsuario: "",
-        username: "",
-        email: "",
-        documento: ""
-      }
-    }
-  
-    this._authSrv.listUsers(this.paginationObj).subscribe(
-      response => {
-        this.dataSource = response.list;
-        this.totalCount = response.totalCount;
-      },
-      error => {
-        console.log('Hubo un error al recuperar los tipos :', error);
-      }
-    );
+      console.log(data);
+      this.paginationObj.limit = data.limit,
+      this.paginationObj.offset = data.offset;
+      this.countTotal = data.totalCount;
+      this.loading = false;
+    })
   }
 
   filtrar(event: Event) {
     const valor = (event.target as HTMLInputElement).value;
+   
     this.filterValue = valor;
-    this.listUsers();
+    
+    this.getUsuarios();
   }
 
   changeActivo(event: MatCheckboxChange) {
@@ -179,6 +183,17 @@ export class UsuariosComponent {
       if (userCreated) {
          this.listUsers();
       }
+    });
+  }
+
+  onClickFilters(): void {
+    const dialogRef = this.dialog.open(FiltroModalComponent, {data: this.paginationObj.filters});
+    dialogRef.afterClosed().subscribe((filtros: any) => {
+      if(filtros){
+        this.paginationObj.filters = filtros;
+        console.log(this.paginationObj.filters);
+        this.getUsuarios()
+    }
     });
   }
 

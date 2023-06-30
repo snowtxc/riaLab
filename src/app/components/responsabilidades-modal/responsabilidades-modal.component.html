@@ -1,0 +1,34 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title> {{data.action == "edit" ? "Editar Responsabilidad" : "Agregar Responsabilidad"}}</h1>
+  <div mat-dialog-content class="form">
+    <mat-grid-list cols="12" rowHeight="100px">
+      <mat-form-field class="col">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+        <mat-hint *ngIf="submit && (form.controls['nombre'].invalid)" class="input-error">Es requerido</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <mat-label>Descripcion</mat-label>
+        <input matInput formControlName="descripcion">
+        <mat-hint *ngIf="submit && (form.controls['descripcion'].invalid)" class="input-error">Es requerido</mat-hint>
+      </mat-form-field>
+    </mat-grid-list>
+    <mat-grid-list cols="12" rowHeight="100px">
+      <mat-form-field class="col">
+        <mat-select placeholder="Area" formControlName="areaId">
+          <mat-option *ngFor="let area of data.areas" [value]="area.id">
+            {{ area.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="submit && (form.controls['areaId'].invalid)" class="input-error">Es requerido</mat-hint>
+      </mat-form-field>
+      <mat-checkbox class="col" (change)="changeActivo($event)" formControlName="activo">Activo</mat-checkbox>
+    </mat-grid-list>
+      
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button cdkFocusInitial>{{data.action == "edit" ? "Editar" : "Crear"}}</button>
+  </div>
+</form>

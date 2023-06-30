@@ -112,43 +112,24 @@ export class LlamadosEstadosPosibles implements OnInit{
   }
 
   onClickAdd():void{
-    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{element:{nombre:""}, action:"create"}});
+    const llamadoPosible: ILlamadosEstadoPosibles = {
+      id: 0,
+      nombre: '',
+      activo: false,
+    }
+    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{element:{...llamadoPosible},id:0, action:"create"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-          const body = {
-            ...result, 
-            activo: true
-          }
-          this._llamados.create(body).subscribe(data =>{
-          this.dataSource.push(data)
-          this.table.renderRows()
-          this._snackBar.open("Tipo de documento creado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'],
-    
-          });
-        })
+          this.getEstadosPosibles()
       }
     });
   }
 
   onEdit(element:ILlamadosEstadoPosibles):void{
-    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{ element: {id: element.id, nombre: element.nombre, activo: element.activo}, action:"edit"}});
+    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{ element: {...element},id:element.id, action:"edit"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this._llamados.update(result).subscribe(data =>{
-          const index = this.dataSource.findIndex(item => item.id ==  data.id);
-          this.dataSource[index] = data;
-          this._snackBar.open("Tipo de documento editado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'], 
-    
-          });
-          this.table.renderRows()
-
-        }, error => {
-          console.log(error)
-        });
+        this.getEstadosPosibles()
       }
     });
   }

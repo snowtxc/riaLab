@@ -111,44 +111,24 @@ export class TiposIntegrantesComponent {
   }
 
   onClickAdd():void{
-    const dialogRef = this.dialog.open(TipoIntegranteModalComponent,{data:{element:{nombre:""}, action:"create"}});
+    const tipoIntegrante: ITipoIntegrante = {
+      id: 0,
+      nombre: '',
+      activo: false,
+    }
+    const dialogRef = this.dialog.open(TipoIntegranteModalComponent,{data:{element:{...tipoIntegrante},id:0, action:"create"}});
     dialogRef.afterClosed().subscribe((modalData:any) => {
       if(modalData){
-          const body:ITipoIntegrante = {
-            id: 0,
-            ...modalData,
-            activo: true
-          }
-          console.log(body);
-
-          this._tipoIntSrv.create(body).subscribe((data:ITipoIntegrante) =>{
-          this.dataSource.push(data)
-          this.table.renderRows()
-          this._snackBar.open("Tipo de integrante creado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'],
-    
-          });
-        })
+          this.getTiposIntegrantes()
       }
     });
   }
 
   onEdit(element:ITipoIntegrante):void{
-    const dialogRef = this.dialog.open(TipoIntegranteModalComponent,{data:{ element: {id: element.id, nombre: element.nombre, activo: element.activo}, action:"edit"}});
+    const dialogRef = this.dialog.open(TipoIntegranteModalComponent,{data:{ element: {...element},id:element.id, action:"edit"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this._tipoIntSrv.update(result).subscribe((data:ITipoIntegrante) =>{
-          const index = this.dataSource.findIndex(item => item.id ==  data.id);
-          this.dataSource[index] = data;
-          this._snackBar.open("Tipo de integrante editado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'], 
-    
-          });
-          this.table.renderRows()
-
-        })
+        this.getTiposIntegrantes()
       }
     });
   }

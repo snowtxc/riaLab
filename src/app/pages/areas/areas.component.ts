@@ -78,7 +78,7 @@ export class AreasComponent {
         this.totalCount = response.totalCount;
       },
       error => {
-        console.log('Hubo un error al recuperar los tipos de estados posibles:', error);
+        console.log('Hubo un error al recuperar las areas:', error);
       }
     );
   }
@@ -101,44 +101,24 @@ export class AreasComponent {
   }
 
   onClickAdd():void{
-    const dialogRef = this.dialog.open(AreaModalComponent,{data:{element:{nombre:""}, action:"create"}});
+    const area: IArea = {
+      id: 0,
+      nombre: '',
+      activo: false,
+    }
+    const dialogRef = this.dialog.open(AreaModalComponent,{data:{element:{...area},id:0, action:"create"}});
     dialogRef.afterClosed().subscribe(modalData => {
       if(modalData){
-          const body:IArea = {
-            id: 0,
-            ...modalData,
-            activo: true
-          }
-          console.log(body);
-
-          this._areaSrv.create(body).subscribe((data:IArea) =>{
-          this.dataSource.push(data)
-          this.table.renderRows()
-          this._snackBar.open("Tipo de documento creado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'],
-    
-          });
-        })
+          this.getAreas();
       }
     });
   }
 
   onEdit(element:IArea):void{
-    const dialogRef = this.dialog.open(AreaModalComponent,{data:{ element: {id: element.id, nombre: element.nombre, activo: element.activo}, action:"edit"}});
+    const dialogRef = this.dialog.open(AreaModalComponent,{data:{ element: {...element},id:element.id, action:"edit"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this._areaSrv.update(result).subscribe((data:IArea) =>{
-          const index = this.dataSource.findIndex(item => item.id ==  data.id);
-          this.dataSource[index] = data;
-          this._snackBar.open("Tipo de documento editado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'], 
-    
-          });
-          this.table.renderRows()
-
-        })
+        this.getAreas();
       }
     });
   }
