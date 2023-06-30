@@ -53,6 +53,9 @@ import { IsGrantedDirective } from './helpers/directive/is-granted.directive';
 import { NotFoundComponent } from './pages/not-found-component/not-found-component.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RestorePasswordComponent } from './pages/restore-password/restore-password.component';
+import { HomeComponent } from './pages/home/home.component';
+import { NuevoLlamadoComponent } from './pages/nuevo-llamado/nuevo-llamado.component';
+import { PostulanteModalComponent } from './components/postulante-modal/postulante-modal.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +80,9 @@ import { RestorePasswordComponent } from './pages/restore-password/restore-passw
     IsGrantedDirective,
     NotFoundComponent,
     RestorePasswordComponent,
+    HomeComponent,
+    NuevoLlamadoComponent,
+    PostulanteModalComponent,
   ],
   imports: [
     BrowserModule,

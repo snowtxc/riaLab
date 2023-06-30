@@ -1,5 +1,5 @@
 export interface ITipoDocumento{
     id: number;
-    activo: boolean;
-    nombre: string
+    activo: boolean | null;
+    nombre: string | null
 }

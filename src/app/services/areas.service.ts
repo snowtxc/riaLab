@@ -12,14 +12,14 @@ export class AreasService {
 
   constructor(private _http : HttpClient) { }
 
-  public list(paginationObj: { limit: number,
-    offset: number,
-    id: number,
-    filters: {
-      activo: boolean | null,
-      nombre: string
+  public list(paginationObj: { limit?: number,
+    offset?: number,
+    id?: number,
+    filters?: {
+      activo?: boolean | null,
+      nombre?: string | null
     },
-    orders: string[]}
+    orders?: string[]}
     ) {
 
     
@@ -39,6 +39,20 @@ export class AreasService {
 
   public delete( id:number ):Observable<any> {
     return this._http.delete(environment.apiUrl+"/Areas/"+id);
+  }
+
+  public listAll(): Observable<any>{
+    return this._http.post(environment.apiUrl+"/Areas/Paged",{
+      limit: -1,
+      offset: 0,
+      filters: {
+        activo: null,
+        nombre: ""
+      }
+    }).pipe(map((res:any) =>{
+      const { list } = res;
+      return list;
+  }));
   }
   
 }
