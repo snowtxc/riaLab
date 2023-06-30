@@ -7,6 +7,8 @@ import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-
 import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles.service';
 import { LlamadoEstadoPosibleModalComponent } from 'src/app/components/llamado-estado-posible-modal/llamado-estado-posible-modal.component';
 import { PageEvent } from '@angular/material/paginator';
+import { PermissionsManagerService } from 'src/app/services/permissions.service';
+import { Role } from 'src/app/helpers/enums/roles.enum';
 
 
 @Component({
@@ -39,9 +41,15 @@ export class LlamadosEstadosPosibles implements OnInit{
     ]
   }
 
+  disabledBtnDelete : boolean = false;
+  disabledBtnEdit: boolean = false;
+
   @ViewChild('table', { static: true,read:MatTable }) table:any
 
-  constructor(private _llamados:  LlamadosEstadosPosiblesService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
+  constructor(private _llamados:  LlamadosEstadosPosiblesService, private _snackBar: MatSnackBar,public dialog: MatDialog,private permissionSrv:PermissionsManagerService){
+    this.disabledBtnDelete = !permissionSrv.isGranted([Role.ADMIN]); 
+    this.disabledBtnEdit = !permissionSrv.isGranted([Role.ADMIN]);  
+  }
 
   ngOnInit(): void {
     this.loading = false;

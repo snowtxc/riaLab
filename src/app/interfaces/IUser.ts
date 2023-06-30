@@ -1,7 +1,7 @@
 export interface IUser{
     id: string;
     username: string,
-    email: "string",
+    email: string,
     persona: {
         id: number,
         activo: boolean,
@@ -10,11 +10,11 @@ export interface IUser{
             activo: boolean,
             nombre: string
         },
-    documento: string,
-    primerNombre: string,
-    segundoNombre: string,
-    primerApellido: string,
-    segundoApellido: string
+        documento: string,
+        primerNombre: string,
+        segundoNombre: string,
+        primerApellido: string,
+        segundoApellido: string
     },
     imagen: string,
     activo: boolean,
