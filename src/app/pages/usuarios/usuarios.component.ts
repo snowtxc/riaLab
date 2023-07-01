@@ -14,7 +14,9 @@ import { IUser } from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
 import { PersonasService } from 'src/app/services/personas.service';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Role } from 'src/app/helpers/enums/roles.enum';
+import { FiltroModalComponent } from 'src/app/components/filtro-modal/filtro-modal.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -29,25 +31,36 @@ export class UsuariosComponent {
   dataSource: any[] = [];
   countTotal: number = 0;
   public tiposDocumentos: ITipoDocumento[] = [];
+  pageEvent : PageEvent = {pageIndex:0, pageSize:10, length:0};
+  filterValue!:string;
+  activoValue:null | boolean = null;
+  totalCount: number = 0;
+  sortDirection: 'asc' | 'desc' = 'asc';
+  sortField: string = '';
 
   roles :  typeof Role = Role;
 
 
   public paginationObj =
     {
-      limit: 10,
-      offset: 0,
+      limit: this.pageEvent.pageSize,
+    offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
       id: 0,
       filters: {
-        activo: undefined,
-        nombre: "",
-        idUsuario: "",
-        username: "",
-        email: "",
-        documento: ""
-        
+        activo: this.activoValue,
+        nombre: '',
+        idUsuario: '',
+        username: '',
+        email: '',
+        documento: '',
       },
       orders: [
+        "activo",
+        "nombre",
+        "idUsuario",
+        "userName",
+        "emai",
+        "documento"
       ]
     }
 
@@ -60,7 +73,7 @@ export class UsuariosComponent {
      private _personaSrv: PersonasService) { }
 
   ngOnInit(): void {
-    this.listUsers();
+    this.getUsuarios();
     this.listTiposDocumentos();
   }
 
@@ -71,6 +84,51 @@ export class UsuariosComponent {
     this.listUsers();
   }
 
+  getUsuarios(): void {
+    this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
+      console.log(this.paginationObj);
+      console.log(data);
+      this.dataSource = data.list.map((user: IUser) => {
+        return {
+          id: user.id,
+          imagen: user.imagen,
+          primerNombre: user.persona.primerNombre,
+          segundoNombre: user.persona.segundoNombre ? user.persona.segundoNombre : '-',
+          primerApellido: user.persona.primerApellido ? user.persona.primerApellido : '-',
+          segundoApellido: user.persona.segundoApellido ? user.persona.segundoApellido : '-',
+          email: user.email,
+          persona: user.persona,
+          activo: user.persona.activo,
+          roles: user.roles
+        }
+      })
+
+      console.log(data);
+      this.paginationObj.limit = data.limit,
+      this.paginationObj.offset = data.offset;
+      this.countTotal = data.totalCount;
+      this.loading = false;
+    })
+  }
+
+  filtrar(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+   
+    this.filterValue = valor;
+    
+    this.getUsuarios();
+  }
+
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.checked;
+    console.log(valor)
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
+    this.getUsuarios()
+  }
 
   listUsers() {
     this.loading = true;
@@ -96,7 +154,6 @@ export class UsuariosComponent {
       this.paginationObj.limit = data.limit,
       this.paginationObj.offset = data.offset;
       this.countTotal = data.totalCount;
-
       this.loading = false;
     })
   }
@@ -126,6 +183,17 @@ export class UsuariosComponent {
       if (userCreated) {
          this.listUsers();
       }
+    });
+  }
+
+  onClickFilters(): void {
+    const dialogRef = this.dialog.open(FiltroModalComponent, {data: this.paginationObj.filters});
+    dialogRef.afterClosed().subscribe((filtros: any) => {
+      if(filtros){
+        this.paginationObj.filters = filtros;
+        console.log(this.paginationObj.filters);
+        this.getUsuarios()
+    }
     });
   }
 

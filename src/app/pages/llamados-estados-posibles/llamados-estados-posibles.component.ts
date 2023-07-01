@@ -7,6 +7,7 @@ import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-
 import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles.service';
 import { LlamadoEstadoPosibleModalComponent } from 'src/app/components/llamado-estado-posible-modal/llamado-estado-posible-modal.component';
 import { PageEvent } from '@angular/material/paginator';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PermissionsManagerService } from 'src/app/services/permissions.service';
 import { Role } from 'src/app/helpers/enums/roles.enum';
 
@@ -26,6 +27,7 @@ export class LlamadosEstadosPosibles implements OnInit{
   sortField: string = '';
   totalCount: number = 0;
   filterValue!:string;
+  activoValue:null | boolean = null;
 
   
   private paginationObj = 
@@ -34,7 +36,7 @@ export class LlamadosEstadosPosibles implements OnInit{
     offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: null,
+      activo: this.activoValue,
       nombre: "" 
     },
     orders: [
@@ -76,7 +78,7 @@ export class LlamadosEstadosPosibles implements OnInit{
       limit: pageSize,
       offset: offset,
       filters: {
-        activo:null,
+        activo: this.activoValue,
         nombre:this.filterValue
       }
     }
@@ -98,44 +100,36 @@ export class LlamadosEstadosPosibles implements OnInit{
     this.getEstadosPosibles();
   }
 
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.checked;
+    console.log(valor)
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
+    this.getEstadosPosibles();
+  }
+
   onClickAdd():void{
-    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{element:{nombre:""}, action:"create"}});
+    const llamadoPosible: ILlamadosEstadoPosibles = {
+      id: 0,
+      nombre: '',
+      activo: false,
+    }
+    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{element:{...llamadoPosible},id:0, action:"create"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-          const body = {
-            ...result, 
-            activo: true
-          }
-          this._llamados.create(body).subscribe(data =>{
-          this.dataSource.push(data)
-          this.table.renderRows()
-          this._snackBar.open("Tipo de documento creado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'],
-    
-          });
-        })
+          this.getEstadosPosibles()
       }
     });
   }
 
   onEdit(element:ILlamadosEstadoPosibles):void{
-    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{ element: {id: element.id, nombre: element.nombre, activo: element.activo}, action:"edit"}});
+    const dialogRef = this.dialog.open(LlamadoEstadoPosibleModalComponent,{data:{ element: {...element},id:element.id, action:"edit"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this._llamados.update(result).subscribe(data =>{
-          const index = this.dataSource.findIndex(item => item.id ==  data.id);
-          this.dataSource[index] = data;
-          this._snackBar.open("Tipo de documento editado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'], 
-    
-          });
-          this.table.renderRows()
-
-        }, error => {
-          console.log(error)
-        });
+        this.getEstadosPosibles()
       }
     });
   }

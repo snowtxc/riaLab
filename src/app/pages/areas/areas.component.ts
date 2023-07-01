@@ -7,6 +7,7 @@ import { AreaModalComponent } from 'src/app/components/area-modal/area-modal.com
 import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-modal.component';
 import { IArea } from 'src/app/interfaces/IArea';
 import { AreasService } from 'src/app/services/areas.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-areas',
@@ -22,6 +23,7 @@ export class AreasComponent {
   sortField: string = '';
   totalCount: number = 0;
   filterValue!:string;
+  activoValue:null | boolean = null;
 
   
   private paginationObj = 
@@ -30,7 +32,7 @@ export class AreasComponent {
     offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
     id: 0,
     filters: {
-      activo: null,
+      activo: this.activoValue,
       nombre: "" 
     },
     orders: [
@@ -44,7 +46,7 @@ export class AreasComponent {
   ngOnInit(): void {
     this._areaSrv.list(this.paginationObj).subscribe(data =>{
       this.dataSource = data.list;
-
+      this.totalCount = data.totalCount;
       this.loading = false;
     })
   }
@@ -65,7 +67,7 @@ export class AreasComponent {
       limit: pageSize,
       offset: offset,
       filters: {
-        activo:null,
+        activo:this.activoValue,
         nombre:this.filterValue
       }
     }
@@ -76,7 +78,7 @@ export class AreasComponent {
         this.totalCount = response.totalCount;
       },
       error => {
-        console.log('Hubo un error al recuperar los tipos de estados posibles:', error);
+        console.log('Hubo un error al recuperar las areas:', error);
       }
     );
   }
@@ -87,45 +89,36 @@ export class AreasComponent {
     this.getAreas();
   }
 
+  changeActivo(event: MatCheckboxChange) {
+    const valor = event.checked;
+    console.log(valor)
+    if (valor) {
+      this.activoValue = true;
+    } else {
+      this.activoValue = null;
+    }
+    this.getAreas();
+  }
+
   onClickAdd():void{
-    const dialogRef = this.dialog.open(AreaModalComponent,{data:{element:{nombre:""}, action:"create"}});
+    const area: IArea = {
+      id: 0,
+      nombre: '',
+      activo: false,
+    }
+    const dialogRef = this.dialog.open(AreaModalComponent,{data:{element:{...area},id:0, action:"create"}});
     dialogRef.afterClosed().subscribe(modalData => {
       if(modalData){
-          const body:IArea = {
-            id: 0,
-            ...modalData,
-            activo: true
-          }
-          console.log(body);
-
-          this._areaSrv.create(body).subscribe((data:IArea) =>{
-          this.dataSource.push(data)
-          this.table.renderRows()
-          this._snackBar.open("Tipo de documento creado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'],
-    
-          });
-        })
+          this.getAreas();
       }
     });
   }
 
   onEdit(element:IArea):void{
-    const dialogRef = this.dialog.open(AreaModalComponent,{data:{ element: {id: element.id, nombre: element.nombre, activo: element.activo}, action:"edit"}});
+    const dialogRef = this.dialog.open(AreaModalComponent,{data:{ element: {...element},id:element.id, action:"edit"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this._areaSrv.update(result).subscribe((data:IArea) =>{
-          const index = this.dataSource.findIndex(item => item.id ==  data.id);
-          this.dataSource[index] = data;
-          this._snackBar.open("Tipo de documento editado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'], 
-    
-          });
-          this.table.renderRows()
-
-        })
+        this.getAreas();
       }
     });
   }

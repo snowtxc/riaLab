@@ -10,14 +10,23 @@ import { AreasComponent } from './pages/areas/areas.component';
 import { TiposIntegrantesComponent } from './pages/tipos-integrantes/tipos-integrantes.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { ResponsabilidadesComponent } from './pages/responsabilidades/responsabilidades.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { RoleGuard } from './guards/role-guard.guard';
 import { Role } from './helpers/enums/roles.enum';
 import { NotFoundComponent } from './pages/not-found-component/not-found-component.component';
-import { RestorePasswordComponent } from './pages/restore-password/restore-password.component';
+import { RestorePasswordComponent } from './pages/restore-password/restore-password.component'
+import { HomeComponent } from './pages/home/home.component';
+import { NuevoLlamadoComponent } from './pages/nuevo-llamado/nuevo-llamado.component';
+
+
+
+
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
-    {path: '', redirectTo: 'tipos-documentos', pathMatch: 'full'},
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: 'home',  component: NuevoLlamadoComponent},
+    {path: 'nuevo-llamado',  component: NuevoLlamadoComponent},
     {path: 'tipos-documentos',  component: TiposDocumentosComponent},
     {path: 'tipos-integrantes',  component: TiposIntegrantesComponent},
     {path: 'areas',  component: AreasComponent},
@@ -26,6 +35,7 @@ const routes: Routes = [
       data: {
         roles: [Role.ADMIN]
       }},
+    {path: 'responsabilidades',  component: ResponsabilidadesComponent},
 
   ],  canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},

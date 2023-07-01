@@ -1,12 +1,15 @@
-
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
 <h1 mat-dialog-title> {{data.action == "edit" ? "Editar Área" : "Agregar nueva Área"}}</h1>
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>Nombre</mat-label>
-    <input matInput [(ngModel)]="data.element.nombre">
-  </mat-form-field>
+    <input matInput formControlName="nombre" required>
+    <mat-error *ngIf="!data.element.nombre">es requerido</mat-error>
+  </mat-form-field>  
+  <mat-checkbox class="col" formControlName="activo">Activo</mat-checkbox>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button  cdkFocusInitial [mat-dialog-close]="data.element">{{data.action == "edit" ? "Editar" : "Crear"}}</button> 
+  <button mat-button  cdkFocusInitial>{{data.action == "edit" ? "Editar" : "Crear"}}</button> 
 </div>
+</form>

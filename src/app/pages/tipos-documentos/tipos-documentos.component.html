@@ -5,7 +5,8 @@
 
 <div class="container" *ngIf="!loading">
   <div class="options">
-    <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre">
+    <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre"class="input">
+    <mat-checkbox class="example-margin" (change)="changeActivo($event)">Activo</mat-checkbox>
     <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="onClickAdd()">
       <mat-icon>add</mat-icon>
     </button>

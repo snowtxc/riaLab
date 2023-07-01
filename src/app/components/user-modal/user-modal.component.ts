@@ -6,6 +6,7 @@ import { Action } from 'src/app/helpers/enums/action.enum';
 import { IUser } from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
 
+
 @Component({
   selector: 'app-user-modal',
   templateUrl: './user-modal.component.html',
@@ -107,11 +108,7 @@ export class UserModalComponent  {
     
   }
 
- 
-
-
   onSubmit(){
-    
      this.submit = true;
      if(this.form.invalid){
       return;
