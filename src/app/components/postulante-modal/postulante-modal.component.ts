@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Action } from 'src/app/helpers/enums/action.enum';
+import { IPostulante } from 'src/app/interfaces/IPostulante';
+import { ITipoDocumento } from 'src/app/interfaces/ITipoDocumento';
 @Component({
   selector: 'app-postulante-modal',
   templateUrl: './postulante-modal.component.html',
@@ -15,8 +17,13 @@ export class PostulanteModalComponent {
   imageB64:any = null;
   form: FormGroup;
   submit : boolean = false;
-  userId : string = "";
+  personaID : number = 0;
+
+  dateMaxDate = new Date(2000, 0, 1);
+  dateMinDate = new Date(2050,0,1);
     
+
+  
 
 
   constructor(
@@ -25,33 +32,42 @@ export class PostulanteModalComponent {
     private _snackBar: MatSnackBar,
     private fb : FormBuilder,
   ) {
+  
 
+   
     if(this.data.action ==  Action.EDIT){
-      const { element, userId } = this.data;
       this.form = this.fb.group({
-        tipoDocumentoId : [element.persona.tipoDeDocumento.id, Validators.required],
-        documento: [element.persona.documento, Validators.required],
-        primerNombre: [element.persona.primerNombre, Validators.required],
-        segundoNombre: [element.persona.segundoNombre],
-        primerApellido: [element.persona.primerApellido, Validators.required],
-        segundoApellido: [element.persona.segundoApellido],
-        email: [element.email, [Validators.required, Validators.email]],
-        activo: [element.persona.activo]
-      })
-      this.userId = userId;
-      this.imageB64 = element.imagen;
+        activo: [true],
+        fechaEntrevista : [null, Validators.required],
+        horaEntrevista: [null, Validators.required],
+        estudioMeritosRealizado: [false], 
+        entrevistaRealizada: [ false ],
+        tipoDocumentoIdPostulante: [null, Validators.required],
+        documentoPostulante: [null, Validators.required],
+        primerNombrePostulante: [null, Validators.required],
+        segundoNombrePostulante: [''],
+        primerApellidoPostulante: [null, Validators.required],
+        segundoApellidoPostulante: ['' ]
+
+        
       
-    }else{
-      this.form = this.fb.group({
-        tipoDocumentoId : [null, Validators.required],
-        documento: [null, Validators.required],
-        primerNombre: ['', Validators.required],
-        segundoNombre: [''],
-        primerApellido: ['', Validators.required],
-        segundoApellido: [''],
-        email: ['', [Validators.required, Validators.email]],
-        activo: [false]
       })
+    }else{
+  
+      this.form = this.fb.group({
+        activo: [true],
+        fechaEntrevista : [null, Validators.required],
+        horaEntrevista: [null, Validators.required],
+        estudioMeritosRealizado: [false], 
+        entrevistaRealizada: [ false ],
+        tipoDocumentoIdPostulante: [null, Validators.required],
+        documentoPostulante: [null, Validators.required],
+        primerNombrePostulante: [null, Validators.required],
+        segundoNombrePostulante: [''],
+        primerApellidoPostulante: [null, Validators.required],
+        segundoApellidoPostulante: ['']
+      })
+      
     }
     
   }
@@ -72,13 +88,41 @@ export class PostulanteModalComponent {
      if(this.form.invalid){
       return;
      }
-     alert("valido");
-    if(this.data.action ==  Action.EDIT){
-        
-    }else{
-      
-      this.submit = false;
+    
+    const formValue = this.form.value;
+    const { activo, fechaEntrevista , horaEntrevista,  estudioMeritosRealizado,  entrevistaRealizada , tipoDocumentoIdPostulante
+      ,documentoPostulante,
+    primerNombrePostulante,
+    segundoNombrePostulante,
+    primerApellidoPostulante,
+    segundoApellidoPostulante}  = formValue;
+
+    
+    const tipoDocumentoSelected : ITipoDocumento = this.data.tiposDocumentos.find((tipoDoc:ITipoDocumento) => tipoDoc.id == tipoDocumentoIdPostulante);
+   
+    const body: IPostulante=  {
+      id: 0 , 
+      activo,
+      fechaHoraEntrevista: fechaEntrevista,
+      estudioMeritosRealizado,
+      entrevistaRealizada,
+      llamadoId: 0,
+      personaId: this.personaID,
+      persona: {
+        id: 0,
+        activo: true,
+        documento: documentoPostulante,
+        primerNombre: primerNombrePostulante,
+        segundoNombre: segundoNombrePostulante,
+        primerApellido: primerApellidoPostulante,
+        segundoApellido: segundoApellidoPostulante,
+        tipoDeDocumento: tipoDocumentoSelected
+      }
     }
+    
+    this.dialogRef.close(body);
+    this.submit = false;
+    
    
   }
 

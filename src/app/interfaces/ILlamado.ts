@@ -16,37 +16,8 @@ export interface ILLamado{
     areaId: number,
     area:  IArea,
 
-    postulantes:IPostulante[],
-
-    
-    miembrosTribunal: 
-      IMiembroTribunal [],
-
-
-
-    llamadoEstados:{
-        id: number,
-        activo: boolean,
-        fechaHora: Date,
-        usuarioTransicion: string,
-        observacion: string,
-        llamadoId: number,
-        llamadoEstadoPosibleId: number,
-        llamadoEstadoPosible: ILlamadosEstadoPosibles
-     } [],
-
-    ultimoEstado: {
-      id: number,
-      activo : boolean,
-      fechaHora: Date,
-      usuarioTransicion: string,
-      observacion: string,
-      llamadoId: number,
-      llamadoEstadoPosibleId: number,
-      llamadoEstadoPosible: ILlamadosEstadoPosibles
-      }
-    }
+}
 
       
-  
+
   
