@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { Observable, map } from 'rxjs';
 
+import { PageEvent } from '@angular/material/paginator';
+import { map } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,7 +36,26 @@ export class LlamadosService {
     }));
   }
 
-  public create(newLlamado:ILLamado){
+
+  public list(paginationObj:{
+    limit: number,
+    offset: number,
+    id: number,
+    filters: {
+      activo: number | null,
+      nombre: string,
+      identificador: string
+    },
+    orders: string[
+      
+    ]
+  }){
+
+    return this._http.post(environment.apiUrl+"/LLamados/Paged", paginationObj);
+  }
+
+
+  public create(newLlamado:any){
       return this._http.post(environment.apiUrl+"/Llamados", newLlamado);
   }
 
@@ -42,9 +64,51 @@ export class LlamadosService {
   }
 
   public delete( id:number ):Observable<any> {
-    console.log(id);
     return this._http.delete(environment.apiUrl+"/Llamados/"+id);
   }
+  
+  public getById(id:string){
+    console.log({
+      limit: 1,
+      offset: 0,
+      id: 38,
+      filters: { 
+        activo: null,
+        nombre: "", 
+        identificador: "" 
+      },
+      orders: [
+        
+      ]
+    })
+    return this._http.post(environment.apiUrl+"/Llamados/Paged", {
+    limit: 1,
+    offset: 0,
+    id,
+    filters: {
+      activo: null,
+      nombre: "", 
+      identificador: "" 
+    },
+    orders: [
+      
+    ]
+  }).pipe(map((data:any) =>{
+    const { list } = data;
+    if(list.length <= 0 ){
+      return null;
+    }
+    return list[0];
+  }));
+
+  }
+
+  public edit(id:number, editLlamado:any){
+    
+    return this._http.put(environment.apiUrl+"/Llamados/"+id, editLlamado);
+  } 
+  
+
   
 }
 

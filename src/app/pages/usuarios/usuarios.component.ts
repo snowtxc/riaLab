@@ -44,7 +44,7 @@ export class UsuariosComponent {
   public paginationObj =
     {
       limit: this.pageEvent.pageSize,
-    offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
+      offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
       id: 0,
       filters: {
         activo: this.activoValue,
@@ -62,7 +62,7 @@ export class UsuariosComponent {
         "emai",
         "documento"
       ]
-    }
+  }
 
   @ViewChild('table', { static: true, read: MatTable }) table: any 
 
@@ -133,8 +133,7 @@ export class UsuariosComponent {
   listUsers() {
     this.loading = true;
     this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
-      console.log(this.paginationObj);
-      console.log(data);
+     
       this.dataSource = data.list.map((user: IUser) => {
         return {
           id: user.id,
@@ -150,7 +149,6 @@ export class UsuariosComponent {
         }
       })
 
-      console.log(data);
       this.paginationObj.limit = data.limit,
       this.paginationObj.offset = data.offset;
       this.countTotal = data.totalCount;
@@ -191,7 +189,6 @@ export class UsuariosComponent {
     dialogRef.afterClosed().subscribe((filtros: any) => {
       if(filtros){
         this.paginationObj.filters = filtros;
-        console.log(this.paginationObj.filters);
         this.getUsuarios()
     }
     });

@@ -115,6 +115,7 @@ export class TiposIntegrantesComponent {
       id: 0,
       nombre: '',
       activo: false,
+      orden: 0
     }
     const dialogRef = this.dialog.open(TipoIntegranteModalComponent,{data:{element:{...tipoIntegrante},id:0, action:"create"}});
     dialogRef.afterClosed().subscribe((modalData:any) => {

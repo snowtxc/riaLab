@@ -18,6 +18,7 @@ import { NotFoundComponent } from './pages/not-found-component/not-found-compone
 import { RestorePasswordComponent } from './pages/restore-password/restore-password.component'
 import { HomeComponent } from './pages/home/home.component';
 import { NuevoLlamadoComponent } from './pages/nuevo-llamado/nuevo-llamado.component';
+import { LlamadosComponent } from './pages/llamados/llamados.component';
 
 
 
@@ -26,7 +27,12 @@ const routes: Routes = [
   {path: '', component: MainComponent, children: [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: 'home',  component: HomeComponent},
-    {path: 'nuevo-llamado',  component: NuevoLlamadoComponent},
+
+    {path: 'llamados',  children: [
+        {path : '', component: LlamadosComponent},
+        {path: 'nuevo',  component: NuevoLlamadoComponent,},
+        {path: ':id/editar',  component: NuevoLlamadoComponent}
+    ]},
     {path: 'tipos-documentos',  component: TiposDocumentosComponent},
     {path: 'tipos-integrantes',  component: TiposIntegrantesComponent},
     {path: 'areas',  component: AreasComponent},
@@ -44,9 +50,6 @@ const routes: Routes = [
   { path: '**', redirectTo: '/404', pathMatch: 'full' },
   { path: '404', component: NotFoundComponent }, 
 
-
-
-  
 ];
 
 @NgModule({  

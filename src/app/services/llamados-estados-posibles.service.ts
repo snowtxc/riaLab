@@ -44,6 +44,20 @@ export class LlamadosEstadosPosiblesService {
       console.log(id);
       return this._http.delete(environment.apiUrl+"/LlamadosEstadosPosibles/"+id);
     }
+
+    public listAll(): Observable<any>{
+      return this._http.post(environment.apiUrl+"/LlamadosEstadosPosibles/Paged",{
+        limit: -1,
+        offset: 0,
+        filters: {
+          activo: null,
+          nombre: ""
+        }
+      }).pipe(map((res:any) =>{
+        const { list } = res;
+        return list;
+    }));
+    }
 }
 
 

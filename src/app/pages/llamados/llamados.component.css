@@ -1,0 +1,26 @@
+.superior{
+    display: flex;
+    justify-content: end;
+    margin: 10px 0px 10px 0px;
+}
+
+.userAvatar{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 5px 0px 0px 0px;
+}
+
+.example-margin {
+    margin-right: 2%;
+}
+
+.input {
+    margin-right: 2%;
+    border-radius: 5px;
+}
+.roles_button{
+    background-color: black !important;
+
+}

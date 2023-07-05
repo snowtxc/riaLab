@@ -1,0 +1,83 @@
+<div class="loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  
+  <div class="container">
+    <div class="superior">
+      <button mat-raised-button color="primary" (click)="onClickAdd()">
+        <mat-icon>add</mat-icon>
+        Agregar nuevo llamado
+      </button>
+    </div>
+
+</div>
+
+
+ <div class="mat-elevation-z8">
+       
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width table" #table>
+      
+  
+        <ng-container matColumnDef="identificador">
+          <th mat-header-cell *matHeaderCellDef> Identificador </th>
+          <td mat-cell *matCellDef="let element"> {{element.identificador}} </td>
+        </ng-container>
+   
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="linkPlanillaPuntajes">
+            <th mat-header-cell *matHeaderCellDef> Link Planilla de puntajes </th>
+            <td mat-cell *matCellDef="let element"> {{element.linkPlanillaPuntajes}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="linkActa">
+            <th mat-header-cell *matHeaderCellDef> Link acta </th>
+            <td mat-cell *matCellDef="let element"> {{element.linkActa}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="minutosEntrevista">
+            <th mat-header-cell *matHeaderCellDef> Minutos de entrevista </th>
+            <td mat-cell *matCellDef="let element"> {{element.minutosEntrevista}} m </td>
+          </ng-container>
+
+        
+
+  
+      
+  
+  
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> acciones </th>
+          <td mat-cell *matCellDef="let element" [width]="200">
+
+    
+            <button mat-mini-fab color="prymary" aria-label="Example icon button with a filter list icon"
+              class="roles_button" (click)="onViewLlamado(element)">
+              <mat-icon>pageview</mat-icon>
+
+            </button>
+  
+           
+  
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+     
+       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"
+        [pageSize]="paginationObj.limit" [length]="countTotal" [pageIndex]="paginationObj.offset"
+        (page)="handlePageEvent($event)">
+      </mat-paginator>
+     
+     
+  
+    </div> 
+ 
+   

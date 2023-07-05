@@ -55,7 +55,6 @@ export class ResponsabilidadesComponent {
 
     this._areas.listAll().subscribe(data =>{
       this.areasArray = data.list;
-      console.log(this.areasArray)
       this.loading = false;
     })
   }
