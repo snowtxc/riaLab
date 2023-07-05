@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment.development';
 import { Observable, map } from 'rxjs';
 
 import { PageEvent } from '@angular/material/paginator';
-import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -37,22 +36,7 @@ export class LlamadosService {
   }
 
 
-  public list(paginationObj:{
-    limit: number,
-    offset: number,
-    id: number,
-    filters: {
-      activo: number | null,
-      nombre: string,
-      identificador: string
-    },
-    orders: string[
-      
-    ]
-  }){
-
-    return this._http.post(environment.apiUrl+"/LLamados/Paged", paginationObj);
-  }
+ 
 
 
   public create(newLlamado:any){
