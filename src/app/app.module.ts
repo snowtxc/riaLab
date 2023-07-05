@@ -69,6 +69,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 import {MatNativeDateModule} from '@angular/material/core';
 import { LlamadosComponent } from './pages/llamados/llamados.component';
+import { MiembroTribunalModalComponent } from './components/miembro-tribunal-modal/miembro-tribunal-modal.component';
+import { FormattedIsoDatePipe } from './helpers/pipes/formatted-iso-date.pipe';
 
 
 
@@ -117,6 +119,8 @@ const CUSTOM_DATE_FORMATS = {
     ResponsabilidadesModalComponent,
     FiltroModalComponent,
     LlamadosComponent,
+    MiembroTribunalModalComponent,
+    FormattedIsoDatePipe,
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@ import { ILlamadosEstadoPosibles } from "./ILlamadosEstadoPosibles";
 export interface ILLamadoEstado{
         id: number,
         activo: boolean,
-        fechaHora: Date,
+        fechaHora: string,
         usuarioTransicion: string,
         observacion: string,
         llamadoId: number,

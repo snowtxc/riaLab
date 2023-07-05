@@ -18,7 +18,7 @@ import { IUser } from '../interfaces/IUser';
 })
 export class AuthService {
 
-  private userSubject: BehaviorSubject<IUser | null>;
+  private userSubject: BehaviorSubject<any | null>;
   public user: Observable<IUser | null>;
 
 

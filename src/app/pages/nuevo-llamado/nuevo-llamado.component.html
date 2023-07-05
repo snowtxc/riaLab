@@ -97,7 +97,7 @@
    
   </mat-card>
 
-  <mat-card class="cardInside">
+  <mat-card class="cardInside"  [style.display]="(action && action == 'edit') ? 'block' : 'none'" >
     <mat-card-header>
       <div class="headerCard">
         <mat-card-title>Postulantes</mat-card-title>
@@ -111,7 +111,7 @@
     </mat-card-header>
     <mat-card-content>
       
-      <table mat-table [dataSource]="postulantesDataSource" class="mat-elevation-z8 full-width table" #table> 
+      <table  #tablePostulantes mat-table [dataSource]="postulantesDataSource" class="mat-elevation-z8 full-width table"> 
        
       
         <!-- Weight Column -->
@@ -132,7 +132,7 @@
           
           <ng-container matColumnDef="fechaHoraEntrevista">
             <th mat-header-cell *matHeaderCellDef> Fecha de Entrevista </th>
-            <td mat-cell *matCellDef="let element"> {{element.fechaHoraEntrevista}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.fechaHoraEntrevista | formattedIsoDate }} </td>
           </ng-container>
 
           
@@ -159,12 +159,13 @@
           <th mat-header-cell *matHeaderCellDef> acciones </th>
           <td mat-cell *matCellDef="let element" [width]="200"> 
             
-                <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="edit_button" >
+                <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="edit_button" (click)="editPostulante(element)" >
                   <mat-icon> border_color</mat-icon>
                 </button>
-                 <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="roles_button">
-                    <mat-icon> person pin circle icon</mat-icon>
-                  </button>
+                <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" class="remove_button"  
+                  (click)="removePostulante(element)">
+                  <mat-icon>restore_from_trash</mat-icon>
+                </button>
                   
     
           </td>
@@ -179,12 +180,12 @@
 
   </mat-card>
 
-  <mat-card class="cardInside" *ngIf="action && action == 'edit'">
+  <mat-card class="cardInside" [style.display]="(action && action == 'edit') ? 'block' : 'none'" >
     <mat-card-header>
       <div class="headerCard">
         <mat-card-title>Miembros del tribunal</mat-card-title>
         <button mat-raised-button color="primary"
-   >
+        (click)="openModalNewMiembroTribula()" >
               <mat-icon>add</mat-icon>
               Agregar nuevo miembro al tribunal 
         </button>
@@ -192,59 +193,38 @@
 
     </mat-card-header>
     <mat-card-content>
-      <table mat-table [dataSource]="postulantesDataSource" class="mat-elevation-z8 full-width table" #table> 
-        <ng-container matColumnDef="imagen">
-          <th mat-header-cell *matHeaderCellDef> Imagen </th>
-          <td mat-cell *matCellDef="let element">  <img mat-card-image [src]="element.imagen " alt="Photo of a Shiba Inu" class="userAvatar">  </td>
-        </ng-container>
+      <table mat-table [dataSource]="miembrosTribunalDataSource" class="mat-elevation-z8 full-width table" #tableMiembrosTribunal> 
+     
       
         <!-- Weight Column -->
-        <ng-container matColumnDef="primerNombre">
-          <th mat-header-cell *matHeaderCellDef> Primero nombre </th>
-          <td mat-cell *matCellDef="let element"> {{element.primerNombre}} </td>
+        <ng-container matColumnDef="tipoDeIntegrante">
+          <th mat-header-cell *matHeaderCellDef> Tipo de Integrante </th>
+          <td mat-cell *matCellDef="let element"> {{element.tipoDeIntegrante.nombre}} </td>
         </ng-container>
 
+
+        <ng-container matColumnDef="primerNombre">
+          <th mat-header-cell *matHeaderCellDef> Primer Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.persona.primerNombre}} </td>
+        </ng-container>
 
           <ng-container matColumnDef="primerApellido">
             <th mat-header-cell *matHeaderCellDef> Primer apellido </th>
-            <td mat-cell *matCellDef="let element"> {{element.primerApellido}} </td>
-          </ng-container>
-
-
-        
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef> Correo electrónico </th>
-            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.persona.primerApellido}} </td>
           </ng-container>
 
           <ng-container matColumnDef="documento">
             <th mat-header-cell *matHeaderCellDef> Documento </th>
-            <td mat-cell *matCellDef="let element"> {{element.documento}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.persona.documento}} </td>
           </ng-container>
 
-          
-          <ng-container matColumnDef="fechaHoraEntrevista">
-            <th mat-header-cell *matHeaderCellDef> Fecha de Entrevista </th>
-            <td mat-cell *matCellDef="let element"> {{element.fechaHoraEntrevista}} </td>
-          </ng-container>
-
-          
-          <ng-container matColumnDef="estudiosMeritosRealizado">
-            <th mat-header-cell *matHeaderCellDef> Estudios de Meritos Realizados </th>
-            <td mat-cell *matCellDef="let element"> {{element.estudiosMeritosRealizado}} </td>
-          </ng-container>
-
+       
           <ng-container matColumnDef="activo">
-            <th mat-header-cell *matHeaderCellDef> Estudios de Meritos Realizados </th>
+            <th mat-header-cell *matHeaderCellDef> Activo </th>
             <td mat-cell *matCellDef="let element"> {{element.activo}} </td>
-            
+          
           </ng-container>
 
-          <ng-container matColumnDef="entrevistaRealizada">
-            <th mat-header-cell *matHeaderCellDef> Entrevista Realizada </th>
-            <td mat-cell *matCellDef="let element"> {{element.entrevistaRealizada}} </td>
-            
-          </ng-container>
 
 
 
@@ -255,21 +235,21 @@
                 <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="edit_button" >
                   <mat-icon> border_color</mat-icon>
                 </button>
-                 <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="roles_button">
-                    <mat-icon> person pin circle icon</mat-icon>
-                  </button>
+               
                   
     
           </td>
         </ng-container>
       
         <!-- Symbol Column -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumnsPostulantes"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumnsPostulantes;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsMiembrosTribunales"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsMiembrosTribunales;"></tr>
       </table>
     </mat-card-content>
    
 
   </mat-card>
+
+ 
 
 </div> 

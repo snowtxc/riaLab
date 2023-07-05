@@ -39,4 +39,18 @@ export class TiposIntegrantesService {
   public delete( id:number ):Observable<any> {
     return this._http.delete(environment.apiUrl+"/TiposDeIntegrantes/"+id);
   }
+
+  public listAll(): Observable<any>{
+    return this._http.post(environment.apiUrl+"/TiposDeIntegrantes/Paged",{
+      limit: -1,
+      offset: 0,
+      filters: {
+        activo: null,
+        nombre: ""
+      }
+    }).pipe(map((res:any) =>{
+      const { list } = res;
+      return list;
+  }));
+  }
 }

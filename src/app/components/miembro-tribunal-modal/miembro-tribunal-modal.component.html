@@ -1,77 +1,66 @@
-<h1 mat-dialog-title> {{data.action == "edit" ? "Editar postulante" : "Agregar nuevo postulante"}}</h1>
+<h1 mat-dialog-title> {{data.action == "edit" ? "Editar Miembro del tribunal" : "Agregar nuevo miembro al tribunal"}}</h1>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">  
   <div mat-dialog-content>
     <div class="form" >
         <mat-card>
           <mat-card-header>
-         
-           
           </mat-card-header>
           <mat-card-content>
             <mat-grid-list cols="12" rowHeight="50px">
-              <mat-grid-tile colspan="4">
+              <mat-grid-tile colspan="3">
               <mat-checkbox class="example-margin"
                   formControlName="activo"> 
-                   Llamado activo
+                   Activo
               </mat-checkbox> 
               </mat-grid-tile>
             </mat-grid-list>
 
-            <mat-grid-list cols="12" rowHeight="100px">
-              <mat-grid-tile colspan="6">
-                <mat-form-field>
-                  <mat-label>Fecha de entrevista</mat-label>
-                  <input matInput [matDatepicker]="pickers" formControlName="fechaEntrevista">
-                  <mat-hint>MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matIconSuffix [for]="pickers"></mat-datepicker-toggle>
-                  <mat-datepicker #pickers></mat-datepicker>
-                </mat-form-field>
-               </mat-grid-tile>
-            
-
-              <mat-grid-tile colspan="6">
-                <mat-form-field appearance="outline">
-                  <mat-label>Hora de Entrevista *</mat-label>
-                  <input  matInput [ngxTimepicker]="picker" formControlName="horaEntrevista">
-                  <ngx-material-timepicker #picker style="z-index: 1000;"></ngx-material-timepicker> 
-                </mat-form-field>
-            
-              </mat-grid-tile>
-
-              <mat-grid-tile colspan="10">
-                <mat-card style="padding: 8px; width: 100%;">
-                  <mat-grid-list cols="12" rowHeight="50px">
-                      <mat-grid-tile colspan="6">
-                      <mat-checkbox class="example-margin"
-                          formControlName="estudioMeritosRealizado"> 
-                        Estudios de meritos realizado
-                        </mat-checkbox>
-                      </mat-grid-tile>
-
-                      <mat-grid-tile colspan="6">
-                        <mat-checkbox class="example-margin"
-                      
-                          formControlName="entrevistaRealizada"> 
-                              Entrevista realizada
-                          </mat-checkbox>
-                      </mat-grid-tile>
-                  
-                  </mat-grid-list>
+            <mat-card>
+                <mat-card-content>
+                    <mat-grid-list cols="12" rowHeight="100px">
+                        <mat-grid-tile colspan="6">
+                            <mat-form-field class="col">
+                              <mat-select placeholder="Tipo de Integrante" formControlName="tipoIntegranteId"  >
+                                <mat-option *ngFor="let tipoIntegrante of data.tiposIntegrantes" [value]="tipoIntegrante.id">
+                                  {{ tipoIntegrante.nombre }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </mat-grid-tile>
+                    </mat-grid-list>
                  
-                </mat-card>
-                
-               </mat-grid-tile>
-             
+
+
+                    <mat-grid-list cols="12" rowHeight="100px">
+                        <mat-grid-tile colspan="3">
+                          <mat-checkbox 
+                              formControlName="renuncia"> 
+                              Renuncia
+                              </mat-checkbox>
+                        </mat-grid-tile>
+          
+                        <mat-grid-tile colspan="9" style="display: flex; flex-direction: column; align-items: center;" *ngIf="form.controls['renuncia'].value">
+                          <mat-form-field class="col" >
+                              <input matInput formControlName="motivoRenuncia" style="min-height: 100px; width: 100%;" placeholder="Motivo de renuncia" >
+                  
+                            </mat-form-field>
+          
+                        </mat-grid-tile>
+                      
+          
+                     
+                      </mat-grid-list>
+                </mat-card-content>
+            </mat-card>
            
-            </mat-grid-list>
 
           </mat-card-content>
         </mat-card>
 
         <mat-card>
         <mat-card-header>
-          Datos del postulante
+          Datos del miembro
         </mat-card-header>
 
         <mat-card-content>
@@ -85,7 +74,7 @@
 
               </span>
 
-            </mat-card-header>
+            </mat-card-header>  
             <mat-card-content *ngIf="asignarPersonaExistente">
               <form [formGroup]="formSearch" (ngSubmit)="searchPersona()"> 
                 <mat-grid-list cols="12" rowHeight="100px">
@@ -124,20 +113,20 @@
 
             <mat-grid-tile colspan="6">
               <mat-form-field class="col">
-                <mat-select placeholder="Tipo de documento" formControlName="tipoDocumentoIdPostulante" (selectionChange)="searchPersona()" [disabled]="(asignarPersonaExistente || data.action == 'edit')" >
+                <mat-select placeholder="Tipo de documento" formControlName="tipoDocumentoIdMiembro" (selectionChange)="searchPersona()" [disabled]="(asignarPersonaExistente || data.action == 'edit')" >
                   <mat-option *ngFor="let tipoDocumento of data.tiposDocumentos" [value]="tipoDocumento.id">
                     {{ tipoDocumento.nombre }}
                   </mat-option>
                 </mat-select>
-                <mat-hint *ngIf="submit && (form.controls['tipoDocumentoIdPostulante'].invalid)" class="input-error" >Es requerido</mat-hint>
+                <mat-hint *ngIf="submit && (form.controls['tipoDocumentoIdMiembro'].invalid)" class="input-error" >Es requerido</mat-hint>
               </mat-form-field>
             </mat-grid-tile>
   
             <mat-grid-tile colspan="6">
               <mat-form-field class="col" >
                 <mat-label>Documento *</mat-label>
-                <input matInput formControlName="documentoPostulante" (keyup)="searchPersona()" [readonly]="asignarPersonaExistente || data.action == 'edit'">
-                <mat-hint *ngIf="submit && (form.controls['documentoPostulante'].invalid)" class="input-error" >Es requerido</mat-hint>
+                <input matInput formControlName="documentoMiembro" (keyup)="searchPersona()" [readonly]="asignarPersonaExistente || data.action == 'edit'">
+                <mat-hint *ngIf="submit && (form.controls['documentoMiembro'].invalid)" class="input-error" >Es requerido</mat-hint>
     
               </mat-form-field>
             </mat-grid-tile>
@@ -146,8 +135,8 @@
             <mat-grid-tile colspan="6">
               <mat-form-field class="col">
                 <mat-label>Primer Nombre *</mat-label>
-                <input matInput  formControlName="primerNombrePostulante" [readonly]="asignarPersonaExistente || data.action == 'edit'">
-                <mat-hint *ngIf="submit && (form.controls['primerNombrePostulante'].invalid)" class="input-error" >Es requerido</mat-hint>
+                <input matInput  formControlName="primerNombreMiembro" [readonly]="asignarPersonaExistente || data.action == 'edit'">
+                <mat-hint *ngIf="submit && (form.controls['primerNombreMiembro'].invalid)" class="input-error" >Es requerido</mat-hint>
     
               </mat-form-field>
             </mat-grid-tile>
@@ -155,15 +144,15 @@
             <mat-grid-tile colspan="6">
               <mat-form-field class="col">
                 <mat-label>Segundo Nombre</mat-label>
-                <input matInput formControlName="segundoNombrePostulante" [readonly]="asignarPersonaExistente || data.action == 'edit'">
+                <input matInput formControlName="segundoNombreMiembro" [readonly]="asignarPersonaExistente || data.action == 'edit'">
               </mat-form-field>
             </mat-grid-tile>
             
             <mat-grid-tile colspan="6">
               <mat-form-field class="col">
                 <mat-label>Primer Apellido *</mat-label>
-                <input matInput formControlName="primerApellidoPostulante" [readonly]="asignarPersonaExistente || data.action == 'edit'"> 
-                <mat-hint *ngIf="submit && (form.controls['primerApellidoPostulante'].invalid)" class="input-error" >Es requerido</mat-hint>
+                <input matInput formControlName="primerApellidoMiembro" [readonly]="asignarPersonaExistente || data.action == 'edit'"> 
+                <mat-hint *ngIf="submit && (form.controls['primerApellidoMiembro'].invalid)" class="input-error" >Es requerido</mat-hint>
     
               </mat-form-field>
             </mat-grid-tile>
@@ -171,7 +160,7 @@
             <mat-grid-tile colspan="6">
               <mat-form-field class="col">
                 <mat-label>Segundo Apellido</mat-label>
-                <input matInput  formControlName="segundoApellidoPostulante" [readonly]="asignarPersonaExistente || data.action == 'edit'">
+                <input matInput  formControlName="segundoApellidoMiembro" [readonly]="asignarPersonaExistente || data.action == 'edit'">
               </mat-form-field>
             </mat-grid-tile>
 

@@ -1,5 +1,6 @@
 export interface ITipoIntegrante{
     id: number;
     activo: boolean;
-    nombre: string
+    nombre: string,
+    orden: number
 }

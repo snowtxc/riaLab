@@ -37,6 +37,19 @@ export class LlamadosService {
   }
 
   public getById(id:string){
+    console.log({
+      limit: 1,
+      offset: 0,
+      id: 38,
+      filters: { 
+        activo: null,
+        nombre: "", 
+        identificador: "" 
+      },
+      orders: [
+        
+      ]
+    })
     return this._http.post(environment.apiUrl+"/Llamados/Paged", {
     limit: 1,
     offset: 0,
@@ -60,6 +73,7 @@ export class LlamadosService {
   }
 
   public edit(id:number, editLlamado:any){
+    
     return this._http.put(environment.apiUrl+"/Llamados/"+id, editLlamado);
   } 
   

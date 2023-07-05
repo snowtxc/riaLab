@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import { ILLamado } from 'src/app/interfaces/ILlamado';
 import { LlamadosService } from 'src/app/services/llamados.service';
 
@@ -31,7 +32,7 @@ export class LlamadosComponent implements OnInit{
       ]
     }
 
-    constructor(private _llamados:LlamadosService){
+    constructor(private _llamados:LlamadosService, private router:Router){
         
     }
 
@@ -43,6 +44,7 @@ export class LlamadosComponent implements OnInit{
     getLlamados(){
       this.loading = true;
       this._llamados.list(this.paginationObj).subscribe((data:any) =>{
+
         const { list , totalCount} = data;
         this.dataSource = list;
         this.countTotal = totalCount;
@@ -57,8 +59,8 @@ export class LlamadosComponent implements OnInit{
 
 
     onViewLlamado(element: ILLamado){
-
-  }
+        this.router.navigate(['/llamados',element.id,'editar']);
+    }
 
     handlePageEvent(e: PageEvent) {
       this.countTotal = e.pageSize;

@@ -15,6 +15,8 @@ export interface ILLamado{
     minutosEntrevista:  number,
     areaId: number,
     area:  IArea,
+    postulantes?: IPostulante[],
+    miembrosTribunal? : IMiembroTribunal[],
 
 }
 
