@@ -25,7 +25,7 @@ import { NuevoLlamadoComponent } from './pages/nuevo-llamado/nuevo-llamado.compo
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
-    {path: 'home',  component: NuevoLlamadoComponent},
+    {path: 'home',  component: HomeComponent},
     {path: 'nuevo-llamado',  component: NuevoLlamadoComponent},
     {path: 'tipos-documentos',  component: TiposDocumentosComponent},
     {path: 'tipos-integrantes',  component: TiposIntegrantesComponent},

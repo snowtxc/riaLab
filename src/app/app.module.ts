@@ -59,6 +59,7 @@ import { PostulanteModalComponent } from './components/postulante-modal/postulan
 import { ResponsabilidadesComponent } from './pages/responsabilidades/responsabilidades.component';
 import { ResponsabilidadesModalComponent } from './components/responsabilidades-modal/responsabilidades-modal.component';
 import { FiltroModalComponent } from './components/filtro-modal/filtro-modal.component';
+import { FiltroLlamadoModalComponent } from './components/filtro-llamado-modal/filtro-llamado-modal.component';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import { FiltroModalComponent } from './components/filtro-modal/filtro-modal.com
     PostulanteModalComponent,
     ResponsabilidadesComponent,
     ResponsabilidadesModalComponent,
-    FiltroModalComponent,    
+    FiltroModalComponent,
+    FiltroLlamadoModalComponent,    
   ],
   imports: [
     BrowserModule,

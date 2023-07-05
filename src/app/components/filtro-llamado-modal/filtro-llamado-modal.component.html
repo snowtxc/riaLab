@@ -1,0 +1,22 @@
+<h1 mat-dialog-title> Filtros</h1>
+
+<div mat-dialog-content>
+    <mat-form-field class="input">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="data.nombre">
+    </mat-form-field>
+    <mat-form-field class="input">
+        <mat-label>Identificador</mat-label>
+        <input matInput [(ngModel)]="data.identificador">
+    </mat-form-field>
+    <mat-form-field class="input">
+        <mat-label>Estado</mat-label>
+        <input matInput [(ngModel)]="data.estado">
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="data.activo">Activo</mat-checkbox>
+</div>
+ 
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button  (click)="onAccept()">Aceptar</button>
+</div>
