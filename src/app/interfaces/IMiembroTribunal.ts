@@ -5,12 +5,12 @@ export interface IMiembroTribunal{
         id: number,
         activo: boolean,
         orden: number,
-        renuncia: false,
+        renuncia: boolean,
         motivoRenuncia: string,
         llamadoId: number,
         personaId: number,
         persona: IPersona,
-        tipoDeIntegranteId: boolean,
+        tipoDeIntegranteId: number,
         tipoDeIntegrante: ITipoIntegrante
     
 }

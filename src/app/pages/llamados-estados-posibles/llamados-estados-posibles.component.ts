@@ -56,6 +56,7 @@ export class LlamadosEstadosPosibles implements OnInit{
   ngOnInit(): void {
     this.loading = false;
     this._llamados.list(this.paginationObj).subscribe(data =>{
+      console.log(data);
       this.dataSource = data.list;
       this.totalCount = data.totalCount;
       this.loading = false;

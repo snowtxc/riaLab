@@ -61,13 +61,41 @@ import { ResponsabilidadesModalComponent } from './components/responsabilidades-
 import { FiltroModalComponent } from './components/filtro-modal/filtro-modal.component';
 
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
+import {MatNativeDateModule} from '@angular/material/core';
+import { LlamadosComponent } from './pages/llamados/llamados.component';
+import { MiembroTribunalModalComponent } from './components/miembro-tribunal-modal/miembro-tribunal-modal.component';
+import { FormattedIsoDatePipe } from './helpers/pipes/formatted-iso-date.pipe';
+
+
+
+const CUSTOM_DATE_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+    timeInput: 'LT', // Agrega el formato para la entrada de hora y minutos
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+    timeInput: 'LT', // Agrega el formato para la visualización de hora y minutos
+  },
+};
+
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainComponent,
     TiposDocumentosComponent,
-    AreasComponent,
+    AreasComponent, 
     TiposIntegrantesComponent,
     LlamadosEstadosPosibles,
     ActiveTextPipe,
@@ -89,7 +117,10 @@ import { FiltroModalComponent } from './components/filtro-modal/filtro-modal.com
     PostulanteModalComponent,
     ResponsabilidadesComponent,
     ResponsabilidadesModalComponent,
-    FiltroModalComponent,    
+    FiltroModalComponent,
+    LlamadosComponent,
+    MiembroTribunalModalComponent,
+    FormattedIsoDatePipe,
   ],
   imports: [
     BrowserModule,
@@ -120,15 +151,20 @@ import { FiltroModalComponent } from './components/filtro-modal/filtro-modal.com
     FlexLayoutModule,
     MatGridListModule,
     MatCheckboxModule,
-    MatProgressBarModule
-
+    MatProgressBarModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule,
+    MatNativeDateModule,
+  
   
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-   }],
+   },
+   { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

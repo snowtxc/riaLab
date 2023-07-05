@@ -1,3 +1,7 @@
+.container{
+    min-height: 80vh;
+}
+
 .field{
     width: 100%;
     margin: 10px;
