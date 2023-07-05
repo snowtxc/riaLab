@@ -27,12 +27,12 @@ const routes: Routes = [
   {path: '', component: MainComponent, children: [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: 'home',  component: HomeComponent},
+
     {path: 'llamados',  children: [
         {path : '', component: LlamadosComponent},
         {path: 'nuevo',  component: NuevoLlamadoComponent,},
         {path: ':id/editar',  component: NuevoLlamadoComponent}
     ]},
-
     {path: 'tipos-documentos',  component: TiposDocumentosComponent},
     {path: 'tipos-integrantes',  component: TiposIntegrantesComponent},
     {path: 'areas',  component: AreasComponent},

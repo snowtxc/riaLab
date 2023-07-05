@@ -59,6 +59,7 @@ import { PostulanteModalComponent } from './components/postulante-modal/postulan
 import { ResponsabilidadesComponent } from './pages/responsabilidades/responsabilidades.component';
 import { ResponsabilidadesModalComponent } from './components/responsabilidades-modal/responsabilidades-modal.component';
 import { FiltroModalComponent } from './components/filtro-modal/filtro-modal.component';
+import { FiltroLlamadoModalComponent } from './components/filtro-llamado-modal/filtro-llamado-modal.component';
 
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -118,6 +119,7 @@ const CUSTOM_DATE_FORMATS = {
     ResponsabilidadesComponent,
     ResponsabilidadesModalComponent,
     FiltroModalComponent,
+    FiltroLlamadoModalComponent,    
     LlamadosComponent,
     MiembroTribunalModalComponent,
     FormattedIsoDatePipe,

@@ -84,6 +84,11 @@ export class NuevoLlamadoComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+      this._areaSrv.listAll().subscribe(data =>{
+        console.log(data)
+        this.areas = data;
+      })
     const url = this.route.snapshot.url;
     const routeSegments = url.map(segment => segment.path);
    
@@ -156,6 +161,7 @@ export class NuevoLlamadoComponent implements OnInit{
     this._tiposIntegrantesSrv.listAll().subscribe(data =>{
       this.tiposIntegrantes = data;
     })
+
   }
 
   getLLamadosEstadosPosible(): void{
