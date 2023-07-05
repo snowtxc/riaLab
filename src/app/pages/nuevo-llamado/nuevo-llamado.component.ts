@@ -60,7 +60,7 @@ export class NuevoLlamadoComponent implements OnInit{
 
   constructor(private fb:FormBuilder, 
     private _tiposDocumento: TiposDocumentosService, 
-    private _areas:AreasService, public dialog: MatDialog,
+    private _areaSrv:AreasService, public dialog: MatDialog,
     private route :ActivatedRoute, private _llamadoSrv:LlamadosService,
     private _snackBar: MatSnackBar ,
     private _postulanteSrv: PostulanteService,
@@ -134,7 +134,7 @@ export class NuevoLlamadoComponent implements OnInit{
 
 
   getAreas():void{
-    this._areas.listAll().subscribe(data =>{
+    this._areaSrv.listAll().subscribe(data =>{
       this.areas = data;
     })
   }

@@ -25,7 +25,10 @@ export class LlamadosComponent implements OnInit{
       filters: {
         activo:  null,
         nombre: "",
-        identificador: ""
+        identificador: "",
+        personaTribunalId : 0,
+        estadoId: 0
+
       },
       orders: [
         
