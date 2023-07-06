@@ -26,6 +26,7 @@ export class MiembroTribunalModalComponent {
 
   personaSelected: IPersona | null = null;
 
+  ordenes: number[] = [1,2,3];
 
 
   constructor(
@@ -39,25 +40,27 @@ export class MiembroTribunalModalComponent {
     
     if(this.data.action ==  Action.EDIT){
       this.form = this.fb.group({
-        activo: [true],
-        renuncia: [false, Validators.required],
-        motivoRenuncia: [''], 
-        tipoIntegranteId: [ false ],
-        tipoDocumentoIdMiembro: [null, Validators.required],
-        documentoMiembro: [null, Validators.required],
-        primerNombreMiembro: [null, Validators.required],
-        segundoNombreMiembro: [''],
-        primerApellidoMiembro: [null, Validators.required],
-        segundoApellidoMiembro: ['']
+        orden: [data.element.orden],
+        activo: [data.element.activo],
+        renuncia: [data.element.renuncia, Validators.required],
+        motivoRenuncia: [data.element.motivoRenuncia], 
+        tipoIntegranteId: [ data.element.tipoDeIntegranteId ],
+        tipoDocumentoIdMiembro: [ data.element.persona.tipoDeDocumento.id, Validators.required],
+        documentoMiembro: [ data.element.persona.documento, Validators.required],
+        primerNombreMiembro: [data.element.persona.primerNombre, Validators.required],
+        segundoNombreMiembro: [ data.element.persona.segundoNombre],
+        primerApellidoMiembro: [ data.element.persona.primerApellido, Validators.required],
+        segundoApellidoMiembro: [ data.element.persona.segundoApellido]
       })
       
     }else{
   
       this.form = this.fb.group({
+        orden: [null],
         activo: [true],
         renuncia: [false, Validators.required],
         motivoRenuncia: [''], 
-        tipoIntegranteId: [ false ],
+        tipoIntegranteId: [ null ],
         tipoDocumentoIdMiembro: [null, Validators.required],
         documentoMiembro: [null, Validators.required],
         primerNombreMiembro: [null, Validators.required],
@@ -142,7 +145,9 @@ onSubmit(){
      }
     
      const formValue = this.form.value;
-    const { activo,  renuncia,
+    const { 
+      orden,
+      activo,  renuncia,
       motivoRenuncia,
       tipoDocumentoIdMiembro,
       tipoIntegranteId,
@@ -152,15 +157,18 @@ onSubmit(){
     primerApellidoMiembro,
     segundoApellidoMiembro}  = formValue;  
 
+
     
     const tipoDocumentoSelected : ITipoDocumento = this.data.tiposDocumentos.find((tipoDoc:ITipoDocumento) => tipoDoc.id == tipoDocumentoIdMiembro);
     const tipoIntegrante : ITipoIntegrante = this.data.tiposDocumentos.find((tipoInt:ITipoIntegrante) => tipoInt.id == tipoIntegranteId);
 
-    if(this.asignarPersonaExistente && this.personaSelected){
+
+    if(this.data.action == 'create'){
+      if(this.asignarPersonaExistente && this.personaSelected){
 
         const body: IMiembroTribunal=  {
           id: 0,
-          orden: tipoIntegrante.orden,
+          orden: orden,
           activo,
           renuncia,
           motivoRenuncia: renuncia ? motivoRenuncia : '',
@@ -172,10 +180,7 @@ onSubmit(){
         
         }
 
-        console.log(body);
-
         this._miembroTribunalSrv.create(body).subscribe(newMiembroTribunal =>{  
-          console.log(newMiembroTribunal)
           this.dialogRef.close(newMiembroTribunal);
         })
 
@@ -195,7 +200,7 @@ onSubmit(){
           }).subscribe((newPersona:any) =>{
             const body: IMiembroTribunal=  {
               id: 0,
-              orden: tipoIntegrante.orden,
+              orden,
               activo,
               renuncia,
               motivoRenuncia: renuncia ? motivoRenuncia : '',
@@ -216,6 +221,28 @@ onSubmit(){
       
     }
 
+    }else{
+      const body: IMiembroTribunal=  {
+        id: this.data.element.id,
+        orden,
+        activo,
+        renuncia,
+        motivoRenuncia: renuncia ? motivoRenuncia : '',
+        tipoDeIntegranteId: tipoIntegranteId,
+        personaId: this.data.element.personaId,
+        persona: this.data.element.persona,
+        llamadoId: this.data.llamadoId,
+        tipoDeIntegrante: tipoIntegrante
+      }
+
+      this._miembroTribunalSrv.edit(this.data.element.id, body).subscribe(miembroTribunalEdited =>{
+        this.dialogRef.close(miembroTribunalEdited);
+
+      })
+
+    }
+
+   
 
   
     

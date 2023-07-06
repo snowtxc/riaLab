@@ -207,6 +207,12 @@
      
       
         <!-- Weight Column -->
+        <ng-container matColumnDef="orden">
+          <th mat-header-cell *matHeaderCellDef> Integrante </th>
+          <td mat-cell *matCellDef="let element"> Integrante {{ element.orden}} </td>
+        </ng-container>
+
+
         <ng-container matColumnDef="tipoDeIntegrante">
           <th mat-header-cell *matHeaderCellDef> Tipo de Integrante </th>
           <td mat-cell *matCellDef="let element"> {{element.tipoDeIntegrante.nombre}} </td>
@@ -242,9 +248,16 @@
           <th mat-header-cell *matHeaderCellDef> acciones </th>
           <td mat-cell *matCellDef="let element" [width]="200"> 
             
-                <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="edit_button" >
+                <button mat-mini-fab color="success" aria-label="Example icon button with a filter list icon" class="edit_button" (click)="editTribunal(element)">
                   <mat-icon> border_color</mat-icon>
                 </button>
+
+                <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" class="remove_button"  
+                  (click)="onRemove(element)"
+                >
+                  <mat-icon>restore_from_trash</mat-icon>
+              </button>
+
                
                   
     

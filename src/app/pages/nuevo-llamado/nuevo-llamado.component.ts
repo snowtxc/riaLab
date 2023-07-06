@@ -25,6 +25,7 @@ import { ILlamadosEstadoPosibles } from 'src/app/interfaces/ILlamadosEstadoPosib
 import { LlamadosEstadosService } from 'src/app/services/llamados-estados.service';
 import { ILLamadoEstado } from 'src/app/interfaces/ILlamadoEstado';
 import { AuthService } from 'src/app/services/auth.service';
+import { MiembrotribunalService } from 'src/app/services/miembrotribunal.service';
 
 
 
@@ -39,7 +40,7 @@ export class NuevoLlamadoComponent implements OnInit{
     submit : boolean = false;
 
      Estados = {
-      INICIADO : 7,
+      INICIADO : 1,
       PRONTO_ESTUDIO_MERITOS : 2,
       PRONTO_ENTREVISTA : 3,
       PRONTO_PSICOTECNICO : 4,
@@ -48,7 +49,7 @@ export class NuevoLlamadoComponent implements OnInit{
    }
 
     displayedColumnsPostulantes: string[] = ['primerNombre', 'primerApellido',  'fechaHoraEntrevista' ,  'estudiosMeritosRealizado', 'activo' , 'entrevistaRealizada' , "actions"];
-    displayedColumnsMiembrosTribunales: string[] = ['tipoDeIntegrante', 'primerNombre', 'primerApellido', 'documento' , "actions"];
+    displayedColumnsMiembrosTribunales: string[] = ['orden', 'tipoDeIntegrante', 'primerNombre', 'primerApellido', 'documento' , "actions"];
 
     postulantesDataSource: IPostulante[] = []; 
     miembrosTribunalDataSource: IMiembroTribunal[] = []; 
@@ -66,6 +67,7 @@ export class NuevoLlamadoComponent implements OnInit{
     llamadosEstadosPosibles: ILlamadosEstadoPosibles[] = [];
 
     currentEstado : ILLamadoEstado | null = null;
+
     
     @ViewChild('tablePostulantes', { static: true, read: MatTable }) tablePostulantes: any ; 
     @ViewChild('tableMiembrosTribunal', { static: true, read: MatTable }) tableMiembrosTribunal: any ; 
@@ -80,7 +82,8 @@ export class NuevoLlamadoComponent implements OnInit{
     private _tiposIntegrantesSrv: TiposIntegrantesService,
     private _llamadosEstadoPosible: LlamadosEstadosPosiblesService,
     private _llamadoEstadoSrv: LlamadosEstadosService,
-    private _authSrv:AuthService){
+    private _authSrv:AuthService,
+    private _miembroTribunalSrv:MiembrotribunalService){
 
 
     this.form = this.fb.group({
@@ -119,7 +122,7 @@ export class NuevoLlamadoComponent implements OnInit{
 
             const { id, activo , identificador, nombre , linkPlanillaPuntajes, linkActa, minutosEntrevista ,areaId , postulantes , miembrosTribunal} = data;
             this.postulantesDataSource = postulantes ? postulantes: [];
-            this.miembrosTribunalDataSource = miembrosTribunal ? miembrosTribunal: [];
+            this.miembrosTribunalDataSource = this.orderTableMiembros(miembrosTribunal) ? miembrosTribunal: [];
             this.llamadoId = id;
             this.loadForm(activo,identificador, nombre, linkPlanillaPuntajes, linkActa, minutosEntrevista, areaId);
           
@@ -205,9 +208,10 @@ export class NuevoLlamadoComponent implements OnInit{
       areaId ,
       postulantes: this.postulantesDataSource 
     }
-
+    
     if(this.action == Action.EDIT && this.llamadoId){
       this._llamadoSrv.edit(this.llamadoId, body).subscribe((data) =>{
+        
         this._snackBar.open("Informacion del llamada editada correctamente", "Cerrar", {
           duration: 2000,
           panelClass: ['red-snackbar'],
@@ -215,15 +219,19 @@ export class NuevoLlamadoComponent implements OnInit{
       });
     }else{
       this._llamadoSrv.create(body).subscribe((newLlamado:any) =>{
-        const llamadoEstadoPosibleFind = this.llamadosEstadosPosibles.find((llamado) => llamado.id == 7);
+        const llamadoEstadoPosibleFind = this.llamadosEstadosPosibles.find((llamado) => llamado.id == 1);
+
+
 
         if(!this._authSrv.userValue){
           return;
         }
 
+
         if(!llamadoEstadoPosibleFind){
           return;
         }
+
 
         const userId = this._authSrv.userValue?.idUsuario;
         const llamadoId = newLlamado.id;
@@ -239,11 +247,15 @@ export class NuevoLlamadoComponent implements OnInit{
           llamadoEstadoPosibleId: llamadoEstadoPosibleFind.id,
           llamadoEstadoPosible: llamadoEstadoPosibleFind
         }
+
         this._llamadoEstadoSrv.create(newEstadoBody).subscribe(newEstado =>{
+     
           this._snackBar.open("LLamado creado correctamente", "Cerrar", {
             duration: 2000,
             panelClass: ['red-snackbar'],
           }); 
+        }, error =>{
+          console.log(error)
         })
 
         
@@ -420,6 +432,7 @@ export class NuevoLlamadoComponent implements OnInit{
 
       });
   }
+  
 
 
 
@@ -458,11 +471,75 @@ export class NuevoLlamadoComponent implements OnInit{
     dialogRef.afterClosed().subscribe((newMiembroTribunal: IMiembroTribunal) => {
       if(newMiembroTribunal){
         this.loading = true;  
-        this.miembrosTribunalDataSource.unshift(newMiembroTribunal);
+
+        const miembrosTribunal =  [...this.miembrosTribunalDataSource, ...[newMiembroTribunal]];
+        this.miembrosTribunalDataSource = this.orderTableMiembros(miembrosTribunal);
         this.tableMiembrosTribunal.renderRows(); 
         
     }
     })
   }
 
+  editTribunal(element:IMiembroTribunal){
+    const dialogRef = this.dialog.open(MiembroTribunalModalComponent, { data: { element:  {  ...element},  action: "edit" , tiposDocumentos: this.tiposDocumentos ,tiposIntegrantes: this.tiposIntegrantes,  llamadoId: this.llamadoId } });
+    dialogRef.afterClosed().subscribe((editedMiembro: IMiembroTribunal) => {
+      if(editedMiembro){
+          const index = this.miembrosTribunalDataSource.findIndex(miembro => miembro.id == editedMiembro.id);
+          this.miembrosTribunalDataSource[index] = editedMiembro;
+          this.tableMiembrosTribunal.renderRows();
+          this._snackBar.open("Se actualizado la informacion del miembro del tribunal", "Cerrar", {
+            duration: 2000,
+            panelClass: ['success-snackbar'],
+          });
+
+        
+       }
+    })
+  
+  }
+
+  onRemove(element:IMiembroTribunal){
+    const title =  `Remover miembro`;
+    const text  = `Seguro deseas remover a  ${element.persona.primerNombre} ${element.persona.primerApellido} del tribunal ?`;
+
+    const dialogRef = this.dialog.open(ConfirmModalComponent,{data:{ title, text }});
+    dialogRef.afterClosed().subscribe(confirm => {
+      if(confirm){
+        this._miembroTribunalSrv.delete(element.id).subscribe((data:any) =>{
+
+          const index = this.miembrosTribunalDataSource.findIndex(miembro => miembro.id == element.id);
+          this.miembrosTribunalDataSource.splice(index,1);
+          this.tableMiembrosTribunal.renderRows();
+          this._snackBar.open("Miembro removido  correctamente", "Cerrar",{
+            duration: 2000,
+            panelClass: ['success-snackbar'], 
+          });
+          
+        })
+      }
+
+    });
+  }
+
+  orderTableMiembros(dataSource:IMiembroTribunal[]){
+    const orders = dataSource.sort((previous:IMiembroTribunal,current: IMiembroTribunal) =>{
+      if(previous.tipoDeIntegrante.orden < current.tipoDeIntegrante.orden){
+          return -1;
+      }
+
+      if(previous.tipoDeIntegrante.orden > current.tipoDeIntegrante.orden){
+        return 1;
+      }
+      
+      if(previous.orden < current.orden){
+        return -1;
+      }else{
+        return 1;
+      }
+      
+      
+    })
+    return orders;
+  }
+  
 }

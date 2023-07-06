@@ -27,6 +27,18 @@
                                 </mat-option>
                               </mat-select>
                             </mat-form-field>
+                            <mat-hint *ngIf="submit && (form.controls['tipoIntegranteId'].invalid)" class="input-error" >Es requerido</mat-hint>
+
+                          </mat-grid-tile>
+
+                          <mat-grid-tile colspan="6">
+                            <mat-form-field class="col">
+                              <mat-select placeholder="Orden" formControlName="orden"  >
+                                <mat-option *ngFor="let orden of ordenes" [value]="orden">
+                                  {{ orden }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
                           </mat-grid-tile>
                     </mat-grid-list>
                  
