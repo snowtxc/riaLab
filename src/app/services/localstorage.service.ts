@@ -21,7 +21,7 @@ export class LocalstorageService {
     localStorage.removeItem(this.keyToken);
   }
 
-  public setUserData(userData: { email :string, nombre: string ,imagen: string, documento: string, idUsuario: string , roles: string[]}){
+  public setUserData(userData: { email :string, nombre: string ,imagen: string, documento: string, idUsuario: string , roles: string[], tipoDocumento:any}){
       localStorage.setItem(this.keyUser,  JSON.stringify(userData));
   }
 

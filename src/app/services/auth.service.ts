@@ -38,7 +38,8 @@ export class AuthService {
         return this.handleErrors(err);
      })).pipe(map((data: any ) =>{
        console.log(data);
-       const { token, roles,idUsuario,email, documento,imagen,nombre } = data;
+       const { token, roles,idUsuario,email, documento,imagen,nombre ,tipoDocumento} = data;
+       
 
        this._localStorage.setToken(token);
        this._localStorage.setUserData({
@@ -47,7 +48,8 @@ export class AuthService {
          documento,
          idUsuario,
          roles,
-         imagen
+         imagen,
+         tipoDocumento
        });
        return data;
      
