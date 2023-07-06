@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Bienvenido {{username}}</h1>
     <div class="options">
-        <button mat-raised-button color="primary" [routerLink]="'/llamados'" class="example-margin">
+        <button mat-raised-button color="primary" [routerLink]="['/llamados/nuevo']" class="example-margin" *appIsGranted="[roles.ADMIN]">
             <mat-icon>add</mat-icon>
             Agregar nuevo llamado
         </button>
@@ -38,6 +38,21 @@
 
                </td>
         </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> acciones </th>
+            <td mat-cell *matCellDef="let element" [width]="200">
+  
+      
+              <button mat-mini-fab color="prymary" aria-label="Example icon button with a filter list icon"
+                class="roles_button" (click)="onViewLlamado(element)">
+                <mat-icon>pageview</mat-icon>
+  
+              </button>
+    
+            </td>
+          </ng-container>
+
 
         <!-- <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> acciones </th>

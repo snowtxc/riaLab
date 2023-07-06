@@ -4,7 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { FiltroLlamadoModalComponent } from 'src/app/components/filtro-llamado-modal/filtro-llamado-modal.component';
+import { Role } from 'src/app/helpers/enums/roles.enum';
 import { ILLamado } from 'src/app/interfaces/ILlamado';
 import { ILLamadoEstado } from 'src/app/interfaces/ILlamadoEstado';
 import { IUser } from 'src/app/interfaces/IUser';
@@ -21,7 +23,7 @@ import { PersonasService } from 'src/app/services/personas.service';
 })
 export class HomeComponent {
   public loading = true;
-  displayedColumns: string[] = ['nombre', 'activo' ,'identificador','estado'];
+  displayedColumns: string[] = ['nombre', 'activo' ,'identificador','estado','actions'];
   dataSource: ILLamado[]=  [];
   estadosArray: ILLamadoEstado[]=  [];
   pageEvent : PageEvent = {pageIndex:0, pageSize:10, length:0};
@@ -53,7 +55,10 @@ export class HomeComponent {
 
   personaId: number | null = null;
 
-  constructor(private personaSrv:PersonasService , private _llamados:  LlamadosService,private _estados: LlamadosEstadosPosiblesService,private _authSrv:AuthService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
+  roles: typeof Role = Role;
+
+
+  constructor(private router:Router ,private personaSrv:PersonasService , private _llamados:  LlamadosService,private _estados: LlamadosEstadosPosiblesService,private _authSrv:AuthService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
 
   ngOnInit(): void {
     this.loading = false;
@@ -126,7 +131,10 @@ export class HomeComponent {
     });
   }
 
-
+  
+  onViewLlamado(element: ILLamado){
+    this.router.navigate(['/llamados',element.id,'editar']);
+  }
 
 
 

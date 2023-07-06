@@ -30,7 +30,10 @@ const routes: Routes = [
 
     {path: 'llamados',  children: [
         {path : '', component: LlamadosComponent},
-        {path: 'nuevo',  component: NuevoLlamadoComponent,},
+        {path: 'nuevo',  component: NuevoLlamadoComponent, canActivate: [RoleGuard],
+        data: {
+          roles: [Role.ADMIN]
+        }},
         {path: ':id/editar',  component: NuevoLlamadoComponent}
     ]},
     {path: 'tipos-documentos',  component: TiposDocumentosComponent},

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { Role } from 'src/app/helpers/enums/roles.enum';
 import { ILLamado } from 'src/app/interfaces/ILlamado';
 import { LlamadosService } from 'src/app/services/llamados.service';
 
@@ -12,6 +13,7 @@ import { LlamadosService } from 'src/app/services/llamados.service';
 export class LlamadosComponent implements OnInit{
     loading: boolean = true;
 
+    roles: typeof Role = Role;
 
     displayedColumns: string[] = ['identificador', 'nombre', 'linkPlanillaPuntajes', 'linkActa', 'minutosEntrevista' ,  "actions"];
     dataSource: ILLamado[] = [];
