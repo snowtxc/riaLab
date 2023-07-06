@@ -57,7 +57,7 @@ export class LlamadosComponent implements OnInit{
     }
 
     onClickAdd(){
-      alert("Hola!");
+     this.router.navigateByUrl("/llamados/nuevo");
     }
 
 

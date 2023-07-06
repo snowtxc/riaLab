@@ -6,6 +6,20 @@
     <input matInput formControlName="nombre">
     <mat-hint *ngIf="submit && (form.controls['nombre'].invalid)" class="input-error">Es requerido</mat-hint>
   </mat-form-field>
+  <br>
+  <mat-form-field class="col">
+    <mat-select placeholder="Orden" formControlName="orden"  >
+      <mat-option *ngFor="let orden of ordenes" [value]="orden">
+        {{ orden }}
+      </mat-option>
+    </mat-select>
+    <mat-hint *ngIf="submit && (form.controls['orden'].invalid)" class="input-error">Es requerido</mat-hint>
+
+  </mat-form-field>
+
+  
+
+  <br>
   <mat-checkbox class="col" formControlName="activo">Activo</mat-checkbox>
 </div>
 <div mat-dialog-actions>

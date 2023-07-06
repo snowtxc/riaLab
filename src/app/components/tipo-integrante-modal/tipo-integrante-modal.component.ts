@@ -18,6 +18,8 @@ export class TipoIntegranteModalComponent {
   form: FormGroup;
   resId: string = "";
 
+  ordenes: number[] = [1,2,3];
+
   constructor(
     public dialogRef: MatDialogRef<TipoIntegranteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -29,12 +31,14 @@ export class TipoIntegranteModalComponent {
     if (this.data.action == Action.EDIT) {
       this.form = this.fb.group({
         nombre: [element.nombre, Validators.required],
+        orden : [element.orden, Validators.required],
         activo: [element.activo]
       })
       this.resId = id;
     } else {
       this.form = this.fb.group({
         nombre: [element.nombre, Validators.required],
+        orden : [element.orden, Validators.required],
         activo: [element.activo]
       })
       this.resId = id;
