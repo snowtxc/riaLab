@@ -12,6 +12,7 @@ export class PermissionsManagerService {
   constructor(private _localStorage: LocalstorageService) { }
 
   isGranted(usersRolesEnabled : Role[]) {
+     
       const userData = this._localStorage.getUserData();
       console.log(userData)
 
