@@ -8,3 +8,7 @@
     background: #F44336;
     color: white;
 } 
+
+.green-snackbar {
+    background: linear-gradient(to right, rgb(46, 139, 87) 20%, rgb(47, 79, 79) 20%) !important;
+}

@@ -27,7 +27,8 @@ export class TiposIntegrantesComponent {
   filterValue!:string;
   activoValue:null | boolean = null;
 
-  
+  roles : typeof Role = Role;
+
   private paginationObj = 
   {
     limit: this.pageEvent.pageSize,
@@ -146,9 +147,9 @@ export class TiposIntegrantesComponent {
           this.dataSource.splice(index,1);
           this._snackBar.open("Tipo de integrante eliminado correctamente", "Cerrar",{
             duration: 2000,
-            panelClass: ['red-snackbar'], 
+            panelClass: ['success-snackbar'], 
           });
-          this.table.renderRows();
+          this.getTiposIntegrantes();
 
         })
       }

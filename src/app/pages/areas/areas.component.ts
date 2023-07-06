@@ -135,10 +135,9 @@ export class AreasComponent {
           this.dataSource.splice(index,1);
           this._snackBar.open("Área eliminada correctamente", "Cerrar",{
             duration: 2000,
-            panelClass: ['red-snackbar'], 
+            panelClass: ['success-snackbar'], 
           });
-          this.table.renderRows();
-
+          this.getAreas();
         })
       }
 

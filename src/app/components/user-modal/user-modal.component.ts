@@ -89,7 +89,7 @@ export class UserModalComponent  {
     if(extension != 'jpg'&& extension != 'png' && extension != 'jpeg'){
       this._snackBar.open("El archivo debe ser una imagen", "Cerrar",{
         duration: 1000,
-        panelClass: ['red-snackbar'],
+        panelClass: ['error-snackbar'],
       });
       return;
     }
@@ -117,7 +117,7 @@ export class UserModalComponent  {
      if(!this.imageB64){
       this._snackBar.open("Debes importar una imagen", "Try again!",{
         duration: 5000,
-        panelClass: ['red-snackbar'],
+        panelClass: ['error-snackbar'],
       });
       return;
      }  
@@ -130,28 +130,31 @@ export class UserModalComponent  {
 
     if(this.data.action ==  Action.EDIT){
         this._auth.updateUser(body).subscribe(result =>{
+          this._snackBar.open("Usuario editado correctamente", "Cerrar", {
+            duration: 2000,
+            panelClass: ['success-snackbar'],
+          });
           this.dialogRef.close(body);
-
           this.submit = false;
         }, errorMsg =>{
           console.log(errorMsg)
-          this._snackBar.open(errorMsg, "Try again!",{
+          this._snackBar.open("Error", "Try again!",{
             duration: 5000,
-            panelClass: ['red-snackbar'],
+            panelClass: ['error-snackbar'],
           });
         })
     }else{
       this._auth.createUser(body).subscribe((userCreated: IUser) => {
         this._snackBar.open("Usuario creado correctamente", "Cerrar", {
           duration: 2000,
-          panelClass: ['red-snackbar'],
+          panelClass: ['success-snackbar'],
         });
         this.dialogRef.close(userCreated);
   
       }, errorMsg =>{
-        this._snackBar.open(errorMsg, "Try again!",{
+        this._snackBar.open("error", "Try again!",{
           duration: 5000,
-          panelClass: ['red-snackbar'],
+          panelClass: ['error-snackbar'],
         });
       });
       this.submit = false;

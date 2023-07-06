@@ -29,6 +29,7 @@ export class LlamadosEstadosPosibles implements OnInit{
   filterValue!:string;
   activoValue:null | boolean = null;
 
+  roles : typeof Role = Role;
   
   private paginationObj = 
   {
@@ -147,9 +148,9 @@ export class LlamadosEstadosPosibles implements OnInit{
           this.dataSource.splice(index,1);
           this._snackBar.open("Tipo de documento eliminado correctamente", "Cerrar",{
             duration: 2000,
-            panelClass: ['red-snackbar'], 
+            panelClass: ['success-snackbar'], 
           });
-          this.table.renderRows()
+          this.getEstadosPosibles()
 
         }, error => {
           console.log(error)

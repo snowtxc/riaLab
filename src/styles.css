@@ -1,21 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .edit_button {
     background-color: rgb(54, 54, 150) !important;
 }
 
-.container{
+.container {
     width: 80%;
     margin: 20px auto 0px auto;
-   
+
 }
 
 
-.loading{
+.loading {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -23,15 +30,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     justify-content: center;
 }
 
-.options{
+.options {
     display: flex;
     justify-content: end;
     margin: 10px 0px 10px 0px;
 }
 
-.input-error{
-    color: 
-    #Ec3343;
+.input-error {
+    color:
+        #Ec3343;
 }
 
 .timepicker-overlay {
@@ -42,4 +49,36 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     z-index: 10000000 !important;
 }
 
+.success-snackbar.mat-mdc-snack-bar-container {
+    .mdc-snackbar__surface {
+        background: rgb(16, 157, 96);
+        background: linear-gradient(90deg, rgba(16, 157, 96, 1) 0%, rgba(45, 107, 74, 1) 10%, rgba(46, 46, 46, 1) 39%);
 
+        .mat-mdc-button {
+            color: white !important;
+        }
+    }
+
+    .mat-mdc-snack-bar-label.mdc-snackbar__label {
+        color: white;
+        font-weight: 500;
+        white-space: pre-wrap
+    }
+}
+
+.error-snackbar.mat-mdc-snack-bar-container {
+    .mdc-snackbar__surface {
+        background: rgb(157, 16, 71);
+        background: linear-gradient(90deg, rgba(157, 16, 71, 1) 0%, rgba(107, 45, 68, 1) 10%, rgba(46, 46, 46, 1) 39%);
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+    }
+
+    .mat-mdc-snack-bar-label.mdc-snackbar__label {
+        color: white;
+        font-weight: 500;
+        white-space: pre-wrap
+    }
+}

@@ -149,11 +149,11 @@ export class ResponsabilidadesComponent {
         this._responsabilidades.delete(element.id).subscribe(data =>{
           const index = this.dataSource.findIndex(item => item.id ==  data.id);
           this.dataSource.splice(index,1);
-          this._snackBar.open("Responsabilidad eliminado correctamente", "Cerrar",{
+          this._snackBar.open("Responsabilidad eliminada correctamente", "Cerrar",{
             duration: 2000,
-            panelClass: ['red-snackbar'], 
+            panelClass: ['success-snackbar'], 
           });
-          this.table.renderRows()
+          this.getResponsabilidades()
 
         }, error => {
           console.log(error)

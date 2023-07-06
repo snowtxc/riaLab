@@ -5,7 +5,7 @@
 
 <div class="container">
   <div class="superior">
-    <button mat-raised-button color="primary" (click)="onClickAdd()">
+    <button mat-raised-button color="primary" (click)="onClickAdd()" class="example-margin">
       <mat-icon>add</mat-icon>
       Agregar nuevo usuario
     </button>
@@ -71,13 +71,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-  
 
-    <mat-paginator  
-    [length]="countTotal"
-    [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"
-      [pageSize]="pageEvent.pageSize"  [pageIndex]="paginationObj.offset"
-      (page)="handlePageEvent($event)">
-    </mat-paginator>
+    <mat-paginator [length]="countTotal" [pageSize]="pageEvent.pageSize" [pageSizeOptions]="[5, 10, 25]"
+    aria-label="Select page" (page)="handlePageEvent($event)" showFirstLastButtons>
+  </mat-paginator>
+
+
+   
 
   </div>
