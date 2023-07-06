@@ -25,6 +25,10 @@ import { ILlamadosEstadoPosibles } from 'src/app/interfaces/ILlamadosEstadoPosib
 import { LlamadosEstadosService } from 'src/app/services/llamados-estados.service';
 import { ILLamadoEstado } from 'src/app/interfaces/ILlamadoEstado';
 import { AuthService } from 'src/app/services/auth.service';
+
+
+
+
 @Component({
   selector: 'app-nuevo-llamado',
   templateUrl: './nuevo-llamado.component.html',
@@ -33,6 +37,15 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NuevoLlamadoComponent implements OnInit{
     form: FormGroup;
     submit : boolean = false;
+
+     Estados = {
+      INICIADO : 7,
+      PRONTO_ESTUDIO_MERITOS : 2,
+      PRONTO_ENTREVISTA : 3,
+      PRONTO_PSICOTECNICO : 4,
+      PRONTO_FIRMAR_ACTA : 5,
+      FINALIZADO : 6   
+   }
 
     displayedColumnsPostulantes: string[] = ['primerNombre', 'primerApellido',  'fechaHoraEntrevista' ,  'estudiosMeritosRealizado', 'activo' , 'entrevistaRealizada' , "actions"];
     displayedColumnsMiembrosTribunales: string[] = ['tipoDeIntegrante', 'primerNombre', 'primerApellido', 'documento' , "actions"];
@@ -52,7 +65,7 @@ export class NuevoLlamadoComponent implements OnInit{
 
     llamadosEstadosPosibles: ILlamadosEstadoPosibles[] = [];
 
-
+    currentEstado : ILLamadoEstado | null = null;
     
     @ViewChild('tablePostulantes', { static: true, read: MatTable }) tablePostulantes: any ; 
     @ViewChild('tableMiembrosTribunal', { static: true, read: MatTable }) tableMiembrosTribunal: any ; 
@@ -76,7 +89,7 @@ export class NuevoLlamadoComponent implements OnInit{
       nombre: ['', Validators.required],
       linkPlanillaPuntajes: ['', [Validators.required,Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
       linkActa: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
-      minutosEntrevista: [null, [ Validators.required , Validators.pattern('^-?(0|[1-9]\d*)?$')]],
+      minutosEntrevista: [null, [ Validators.required ,Validators.pattern('^[0-9]+$')]],
       areaId: [null, Validators.required],
     })
 
@@ -86,7 +99,6 @@ export class NuevoLlamadoComponent implements OnInit{
   ngOnInit(): void {
 
       this._areaSrv.listAll().subscribe(data =>{
-        console.log(data)
         this.areas = data;
       })
     const url = this.route.snapshot.url;
@@ -98,10 +110,13 @@ export class NuevoLlamadoComponent implements OnInit{
         if(!llamadoId){
           return;
         }
-        this._llamadoSrv.getById(llamadoId).subscribe((data:ILLamado) =>{
+        this._llamadoSrv.getById(llamadoId).subscribe((data:any) =>{
             if(!data){
               return;  //redirect to not found
             }
+            this.currentEstado =  data.ultimoEstado;
+
+
             const { id, activo , identificador, nombre , linkPlanillaPuntajes, linkActa, minutosEntrevista ,areaId , postulantes , miembrosTribunal} = data;
             this.postulantesDataSource = postulantes ? postulantes: [];
             this.miembrosTribunalDataSource = miembrosTribunal ? miembrosTribunal: [];
@@ -167,6 +182,7 @@ export class NuevoLlamadoComponent implements OnInit{
   getLLamadosEstadosPosible(): void{
     this._llamadosEstadoPosible.listAll().subscribe(data =>{
       this.llamadosEstadosPosibles = data;
+      
     })
   }
 
@@ -199,7 +215,7 @@ export class NuevoLlamadoComponent implements OnInit{
       });
     }else{
       this._llamadoSrv.create(body).subscribe((newLlamado:any) =>{
-        const llamadoEstadoPosibleFind = this.llamadosEstadosPosibles.find((llamado) => llamado.id == 5);
+        const llamadoEstadoPosibleFind = this.llamadosEstadosPosibles.find((llamado) => llamado.id == 7);
 
         if(!this._authSrv.userValue){
           return;
@@ -223,9 +239,7 @@ export class NuevoLlamadoComponent implements OnInit{
           llamadoEstadoPosibleId: llamadoEstadoPosibleFind.id,
           llamadoEstadoPosible: llamadoEstadoPosibleFind
         }
-        console.log(newEstadoBody);
         this._llamadoEstadoSrv.create(newEstadoBody).subscribe(newEstado =>{
-          console.log(newEstado)
           this._snackBar.open("LLamado creado correctamente", "Cerrar", {
             duration: 2000,
             panelClass: ['red-snackbar'],
@@ -234,7 +248,6 @@ export class NuevoLlamadoComponent implements OnInit{
 
         
         this.form.reset();
-        this.form.clearValidators();
         this.submit = false;
       }, errorMsg =>{
         this._snackBar.open(errorMsg, "Cerrar", {
@@ -245,6 +258,91 @@ export class NuevoLlamadoComponent implements OnInit{
   
       })
     }
+ 
+  }
+
+  createLlamadoEstado(newEstadoId: number){
+    const llamadoEstadoPosibleFind = this.llamadosEstadosPosibles.find((llamado) => llamado.id == newEstadoId);
+    if(!this.llamadoId){
+      return;
+    }
+
+    if(!llamadoEstadoPosibleFind){
+      return;
+    }
+
+    const userId = this._authSrv.userValue?.idUsuario;
+    const newEstadoBody:ILLamadoEstado = {
+      id: 0,
+      activo: true,
+      fechaHora: new Date().toISOString(),
+      usuarioTransicion:  userId ,
+      observacion: '',
+      llamadoId: this.llamadoId ,
+      llamadoEstadoPosibleId: llamadoEstadoPosibleFind.id,
+      llamadoEstadoPosible: llamadoEstadoPosibleFind
+    }
+    this._llamadoEstadoSrv.create(newEstadoBody).subscribe(newEstado =>{
+      this.currentEstado = newEstado;
+      console.log(this.currentEstado);
+      this._snackBar.open("Ahora el estado del llamado se encuentra en " + newEstado.llamadoEstadoPosible.nombre , "Cerrar", {
+        duration: 2000,
+        panelClass: ['red-snackbar'],
+      });
+    })
+  }
+
+  nextEstado(){
+    if(!this.currentEstado){
+      return;
+    }
+    
+    const dialogRef = this.dialog.open(ConfirmModalComponent,{data:{ title: "Deseas pasar al siguiente estado?", text : "Al confirmar el estado pasara al siguiente estado" }});
+    dialogRef.afterClosed().subscribe(confirm => {
+      if(confirm){
+        const estadoID =  this.currentEstado?.llamadoEstadoPosible.id;
+        switch(estadoID){
+            case this.Estados.INICIADO :
+              if(this.postulantesDataSource.length <= 0){
+                this._snackBar.open("Debes agregar al menos un postulante para iniciar el El Estudio de meritos", "Cerrar", {
+                  duration: 2000,
+                  panelClass: ['red-snackbar'],
+                });
+                return;
+              }
+              this.createLlamadoEstado(this.Estados.PRONTO_ESTUDIO_MERITOS);
+              break;
+            case this.Estados.PRONTO_ESTUDIO_MERITOS:
+              const validEstudioMeritos = this.postulantesDataSource.every(postulante => postulante.estudioMeritosRealizado);
+              if(!validEstudioMeritos){
+                this._snackBar.open("Todos los postulantes deben haber realizado el estudio de meritos", "Cerrar", {
+                  duration: 2000,
+                  panelClass: ['red-snackbar'],
+                }); 
+                return;
+              }
+              this.createLlamadoEstado(this.Estados.PRONTO_ENTREVISTA);
+              break;
+            case this.Estados.PRONTO_ENTREVISTA:
+              const validEntrevistas = this.postulantesDataSource.every(postulante => postulante.entrevistaRealizada);
+              if(!validEntrevistas){
+                this._snackBar.open("Todos los postulantes deben haber realizado la entrevista entrevista", "Cerrar", {
+                  duration: 2000,
+                  panelClass: ['red-snackbar'],
+                });
+                return;
+              }
+              this.createLlamadoEstado(this.Estados.PRONTO_PSICOTECNICO);
+              break;
+            case this.Estados.PRONTO_PSICOTECNICO:
+              this.createLlamadoEstado(this.Estados.PRONTO_FIRMAR_ACTA);
+              break;
+            case this.Estados.PRONTO_FIRMAR_ACTA:
+              this.createLlamadoEstado(this.Estados.FINALIZADO);
+              break;
+        }
+      }
+    });
  
   }
 

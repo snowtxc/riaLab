@@ -2,6 +2,7 @@
     display: flex;
     justify-content: end;
     margin: 10px 0px 10px 0px;
+    width: 100%;
 }
 
 .userAvatar{
@@ -23,4 +24,8 @@
 .roles_button{
     background-color: black !important;
 
+}
+
+.table{
+    padding: 10px;
 }

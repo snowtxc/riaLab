@@ -54,7 +54,7 @@ export class ResponsabilidadesComponent {
     })
 
     this._areas.listAll().subscribe(data =>{
-      this.areasArray = data.list;
+      this.areasArray = data;
       this.loading = false;
     })
   }
@@ -121,6 +121,7 @@ export class ResponsabilidadesComponent {
       },
       areaId: ''
     }
+
     const dialogRef = this.dialog.open(ResponsabilidadesModalComponent,{data:{element:{...responsabilidadData},areas:this.areasArray,id:0, action:"create"}});
     dialogRef.afterClosed().subscribe(result => {
       if(result){

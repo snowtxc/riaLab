@@ -56,6 +56,7 @@ export class PostulanteModalComponent {
       const time = date.format("HH:mm A");
       const formattedDate = date.format("MM/DD/YYYY")
 
+      console.log(formattedDate)
       this.personaSelected = this.data.element.persona;
       this.form = this.fb.group({
           activo: [this.data.element.activo],
