@@ -43,8 +43,8 @@ export class UsuariosComponent {
 
   public paginationObj =
     {
-      limit: this.pageEvent.pageSize,
-      offset: this.pageEvent.pageIndex * this.pageEvent.pageSize,
+      limit: 10,
+      offset: 0,
       id: 0,
       filters: {
         activo: this.activoValue,
@@ -55,12 +55,7 @@ export class UsuariosComponent {
         documento: '',
       },
       orders: [
-        "activo",
-        "nombre",
-        "idUsuario",
-        "userName",
-        "emai",
-        "documento"
+      
       ]
   }
 
@@ -94,8 +89,15 @@ export class UsuariosComponent {
       offset: offset
     }
 
+
+      this.paginationObj = 
+      {
+        ...this.paginationObj,
+        limit: pageSize,
+        offset: offset
+      }
+
     this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
-      console.log(this.paginationObj);
       console.log(data);
       this.dataSource = data.list.map((user: IUser) => {
         return {
@@ -112,9 +114,9 @@ export class UsuariosComponent {
         }
       })
 
-      console.log(data);
-      // this.paginationObj.limit = data.limit,
-      // this.paginationObj.offset = data.offset;
+
+      this.paginationObj.limit = data.limit,
+      this.paginationObj.offset = data.offset;
       this.countTotal = data.totalCount;
       this.loading = false;
     })
@@ -130,7 +132,6 @@ export class UsuariosComponent {
 
   changeActivo(event: MatCheckboxChange) {
     const valor = event.checked;
-    console.log(valor)
     if (valor) {
       this.activoValue = true;
     } else {
@@ -226,7 +227,7 @@ export class UsuariosComponent {
       if (result) {
           const index = this.dataSource.findIndex(item => item.id == result.id);
           this.dataSource[index] = result; 
-          this.table.renderRows();
+          this.getUsuarios();
           this._snackBar.open("Usuario editado correctamente", "Cerrar", {
             duration: 2000,
             panelClass: ['success-snackbar'],

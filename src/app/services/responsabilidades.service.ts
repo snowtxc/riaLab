@@ -38,7 +38,6 @@ export class ResponsabilidadesService {
   }
 
   public delete( id:number ):Observable<any> {
-    console.log(id);
     return this._http.delete(environment.apiUrl+"/Responsabilidades/"+id);
   }
 }

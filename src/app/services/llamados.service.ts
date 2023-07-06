@@ -51,39 +51,8 @@ export class LlamadosService {
     return this._http.delete(environment.apiUrl+"/Llamados/"+id);
   }
   
-  public getById(id:string){
-    console.log({
-      limit: 1,
-      offset: 0,
-      id: 38,
-      filters: { 
-        activo: null,
-        nombre: "", 
-        identificador: "" 
-      },
-      orders: [
-        
-      ]
-    })
-    return this._http.post(environment.apiUrl+"/Llamados/Paged", {
-    limit: 1,
-    offset: 0,
-    id,
-    filters: {
-      activo: null,
-      nombre: "", 
-      identificador: "" 
-    },
-    orders: [
-      
-    ]
-  }).pipe(map((data:any) =>{
-    const { list } = data;
-    if(list.length <= 0 ){
-      return null;
-    }
-    return list[0];
-  }));
+  public getById(id:string):Observable<ILLamado | null>{
+    return this._http.get<ILLamado | null>(environment.apiUrl+"/Llamados/"+id, );
 
   }
 

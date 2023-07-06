@@ -153,6 +153,7 @@ export class TiposDocumentosComponent implements OnInit{
           });
           this.getTiposDeDocumento()
 
+
         }, error => {
           console.log(error)
         });

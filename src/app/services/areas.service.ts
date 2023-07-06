@@ -46,7 +46,7 @@ export class AreasService {
       limit: -1,
       offset: 0,
       filters: {
-        activo: null,
+        activo: true,
         nombre: ""
       }
     }).pipe(map((res:any) =>{
