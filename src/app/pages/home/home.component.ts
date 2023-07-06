@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles.service';
 import { LlamadosService } from 'src/app/services/llamados.service';
 import { LocalstorageService } from 'src/app/services/localstorage.service';
+import { PersonasService } from 'src/app/services/personas.service';
 
 @Component({
   selector: 'app-home',
@@ -48,20 +49,22 @@ export class HomeComponent {
     ]
   }
 
-  @ViewChild('table', { static: true,read:MatTable }) table:any
+  @ViewChild('table', { static: true,read:MatTable }) table:any;
 
-  constructor(private _llamados:  LlamadosService,private _estados: LlamadosEstadosPosiblesService,private _authSrv:AuthService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
+  personaId: number | null = null;
+
+  constructor(private personaSrv:PersonasService , private _llamados:  LlamadosService,private _estados: LlamadosEstadosPosiblesService,private _authSrv:AuthService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
 
   ngOnInit(): void {
     this.loading = false;
-    this.getLlamados()
     this.username = this._authSrv.userValue.nombre
-    console.log(this.username)
-    // this._estados.listAll().subscribe(data =>{
-    //   this.areasArray = data.list;
-    //   console.log(this.areasArray)
-    //   this.loading = false;
-    // })
+
+    const { documento, tipoDocumento} = this._authSrv.userValue;
+    this.personaSrv.searchByDocumento(tipoDocumento.id, documento).subscribe((personaData:any) =>{
+        this.personaId = personaData.id;
+        this.getLlamados();
+
+    })
   }
 
   onPaginateChange(event: PageEvent) {
@@ -76,20 +79,11 @@ export class HomeComponent {
   }
 
   getLlamados(): void {
-    // const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
-    // const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
-    // const offset = pageIndex * pageSize;
-
-    // this.paginationObj = 
-    // {
-    //   ...this.paginationObj,
-    //   limit: pageSize,
-    //   offset: offset,
-    //   
-    // }
-    console.log(this._authSrv.userValue.personaId)
-    
-    this.paginationObj.filters.personaTribunalId = this._authSrv.userValue?.personaId;
+   
+    if(!this.personaId){
+      return;
+    }
+    this.paginationObj.filters.personaTribunalId = this.personaId;
     console.log(this.paginationObj)
     this._llamados.list(this.paginationObj).subscribe(
       response => {

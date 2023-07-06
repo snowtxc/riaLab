@@ -6,3 +6,8 @@
     margin-right: 2%;
     border-radius: 5px;
 }
+
+.mat-success {
+    background-color: green !important;
+    color: #fff;
+}
