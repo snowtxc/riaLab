@@ -71,26 +71,30 @@ export class LlamadoEstadoPosibleModalComponent {
     if (this.data.action == Action.EDIT) {
       this.form.value.id = this.data.id
       this._llamado.update(body).subscribe(result => {
+        this._snackBar.open("Tipo documento editado correctamente", "Cerrar", {
+          duration: 2000,
+          panelClass: ['success-snackbar'],
+        });
         this.dialogRef.close(body);
         this.submit = false;
       }, errorMsg => {
         console.log(errorMsg)
-        this._snackBar.open(errorMsg, "Try again!", {
+        this._snackBar.open("Error", "Try again!", {
           duration: 5000,
-          panelClass: ['red-snackbar'],
+          panelClass: ['error-snackbar'],
         });
       })
     } else {
       this._llamado.create(body).subscribe((llamadoCreated: ILlamadosEstadoPosibles) => {
         this._snackBar.open("Tipo documento creado correctamente", "Cerrar", {
           duration: 2000,
-          panelClass: ['red-snackbar'],
+          panelClass: ['success-snackbar'],
         });
         this.dialogRef.close(llamadoCreated);
       }, errorMsg => {
         this._snackBar.open(errorMsg, "Try again!", {
           duration: 5000,
-          panelClass: ['red-snackbar'],
+          panelClass: ['error-snackbar'],
         });
       });
       this.submit = false;

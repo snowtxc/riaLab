@@ -8,6 +8,7 @@ import { FiltroLlamadoModalComponent } from 'src/app/components/filtro-llamado-m
 import { ILLamado } from 'src/app/interfaces/ILlamado';
 import { ILLamadoEstado } from 'src/app/interfaces/ILlamadoEstado';
 import { IUser } from 'src/app/interfaces/IUser';
+import { AuthService } from 'src/app/services/auth.service';
 import { LlamadosEstadosPosiblesService } from 'src/app/services/llamados-estados-posibles.service';
 import { LlamadosService } from 'src/app/services/llamados.service';
 import { LocalstorageService } from 'src/app/services/localstorage.service';
@@ -49,15 +50,11 @@ export class HomeComponent {
 
   @ViewChild('table', { static: true,read:MatTable }) table:any
 
-  constructor(private _llamados:  LlamadosService,private _estados: LlamadosEstadosPosiblesService,private _userInfo:LocalstorageService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
+  constructor(private _llamados:  LlamadosService,private _estados: LlamadosEstadosPosiblesService,private _authSrv:AuthService, private _snackBar: MatSnackBar,public dialog: MatDialog){}
 
   ngOnInit(): void {
     this.loading = false;
-    this._llamados.list(this.paginationObj).subscribe(data =>{
-      this.dataSource = data.list;
-      this.totalCount = data.totalCount;
-      this.loading = false;
-    })
+    this.getLlamados()
 
     // this._estados.listAll().subscribe(data =>{
     //   this.areasArray = data.list;
@@ -87,12 +84,10 @@ export class HomeComponent {
     //   ...this.paginationObj,
     //   limit: pageSize,
     //   offset: offset,
-    //   filters: {
-    //     activo: this.activoValue,
-    //     nombre:this.filterValue
-    //   }
+    //   
     // }
-    this.paginationObj.filters.personaTribunalId = this._userInfo.getUserData().idUsuario
+    console.log(this._authSrv.userValue?.idUsuario)
+    this.paginationObj.filters.personaTribunalId = this._authSrv.userValue?.idUsuario;
     this._llamados.list(this.paginationObj).subscribe(
       response => {
         this.dataSource = response.list;

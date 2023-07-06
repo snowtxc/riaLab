@@ -4,7 +4,7 @@ import { ITipoDocumento } from 'src/app/interfaces/ITipoDocumento';
 import { TiposDocumentosService } from 'src/app/services/tipos-documentos.service';
 import { MatDialog } from '@angular/material/dialog';
 import {MatTable} from '@angular/material/table' //<--you need import MatTable
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmModalComponent } from 'src/app/components/confirm-modal/confirm-modal.component';
 import { PageEvent } from '@angular/material/paginator';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -128,23 +128,6 @@ export class TiposDocumentosComponent implements OnInit{
     });
   }
 
-  filter():void{
-    const dialogRef = this.dialog.open(TipoDocumentoModalComponent,{data:{element:{nombre:""}, action:"create"}});
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-          this._tiposDocSrv.create(result).subscribe(data =>{
-          this.dataSource.push(data)
-          this.table.renderRows()
-          this._snackBar.open("Tipo de documento creado correctamente", "Cerrar",{
-            duration: 2000,
-            panelClass: ['red-snackbar'],
-    
-          });
-        })
-      }
-    });
-  }
-
   onEdit(element:ITipoDocumento):void{
     const dialogRef = this.dialog.open(TipoDocumentoModalComponent,{data:{ element: {...element},id:element.id, action:"edit"}});
     dialogRef.afterClosed().subscribe(result => {
@@ -166,9 +149,9 @@ export class TiposDocumentosComponent implements OnInit{
           this.dataSource.splice(index,1);
           this._snackBar.open("Tipo de documento eliminado correctamente", "Cerrar",{
             duration: 2000,
-            panelClass: ['red-snackbar'], 
+            panelClass: ['success-snackbar'], 
           });
-          this.table.renderRows()
+          this.getTiposDeDocumento()
 
         }, error => {
           console.log(error)

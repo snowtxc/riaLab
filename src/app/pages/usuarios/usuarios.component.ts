@@ -70,7 +70,7 @@ export class UsuariosComponent {
     private _snackBar: MatSnackBar, 
     public dialog: MatDialog,
      private _tipoDocSrv: TiposDocumentosService,
-     private _personaSrv: PersonasService) { }
+     private _personaSrv: PersonasService) {}
 
   ngOnInit(): void {
     this.getUsuarios();
@@ -78,13 +78,22 @@ export class UsuariosComponent {
   }
 
   handlePageEvent(e: PageEvent) {
-    this.countTotal = e.pageSize;
-    this.paginationObj.offset = e.pageIndex;
-
-    this.listUsers();
+    this.pageEvent = e;
+    this.getUsuarios();
   }
 
   getUsuarios(): void {
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+
+    this.paginationObj = 
+    {
+      ...this.paginationObj,
+      limit: pageSize,
+      offset: offset
+    }
+
     this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
       console.log(this.paginationObj);
       console.log(data);
@@ -104,8 +113,8 @@ export class UsuariosComponent {
       })
 
       console.log(data);
-      this.paginationObj.limit = data.limit,
-      this.paginationObj.offset = data.offset;
+      // this.paginationObj.limit = data.limit,
+      // this.paginationObj.offset = data.offset;
       this.countTotal = data.totalCount;
       this.loading = false;
     })
@@ -130,31 +139,31 @@ export class UsuariosComponent {
     this.getUsuarios()
   }
 
-  listUsers() {
-    this.loading = true;
-    this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
+  // listUsers() {
+  //   this.loading = true;
+  //   this._authSrv.listUsers(this.paginationObj).subscribe((data: IResponseList) => {
      
-      this.dataSource = data.list.map((user: IUser) => {
-        return {
-          id: user.id,
-          imagen: user.imagen,
-          primerNombre: user.persona.primerNombre,
-          segundoNombre: user.persona.segundoNombre ? user.persona.segundoNombre : '-',
-          primerApellido: user.persona.primerApellido ? user.persona.primerApellido : '-',
-          segundoApellido: user.persona.segundoApellido ? user.persona.segundoApellido : '-',
-          email: user.email,
-          persona: user.persona,
-          activo: user.persona.activo,
-          roles: user.roles
-        }
-      })
+  //     this.dataSource = data.list.map((user: IUser) => {
+  //       return {
+  //         id: user.id,
+  //         imagen: user.imagen,
+  //         primerNombre: user.persona.primerNombre,
+  //         segundoNombre: user.persona.segundoNombre ? user.persona.segundoNombre : '-',
+  //         primerApellido: user.persona.primerApellido ? user.persona.primerApellido : '-',
+  //         segundoApellido: user.persona.segundoApellido ? user.persona.segundoApellido : '-',
+  //         email: user.email,
+  //         persona: user.persona,
+  //         activo: user.persona.activo,
+  //         roles: user.roles
+  //       }
+  //     })
 
-      this.paginationObj.limit = data.limit,
-      this.paginationObj.offset = data.offset;
-      this.countTotal = data.totalCount;
-      this.loading = false;
-    })
-  }
+  //     this.paginationObj.limit = data.limit,
+  //     this.paginationObj.offset = data.offset;
+  //     this.countTotal = data.totalCount;
+  //     this.loading = false;
+  //   })
+  // }
 
   listTiposDocumentos() {  //list all
     this._tipoDocSrv.list(
@@ -179,7 +188,7 @@ export class UsuariosComponent {
     const dialogRef = this.dialog.open(UserModalComponent, { data: { element: null, tiposDocumentos: this.tiposDocumentos, action: "create" } });
     dialogRef.afterClosed().subscribe((userCreated: any) => {
       if (userCreated) {
-         this.listUsers();
+         this.getUsuarios();
       }
     });
   }
@@ -220,7 +229,7 @@ export class UsuariosComponent {
           this.table.renderRows();
           this._snackBar.open("Usuario editado correctamente", "Cerrar", {
             duration: 2000,
-            panelClass: ['red-snackbar'],
+            panelClass: ['success-snackbar'],
           });
       }
   });

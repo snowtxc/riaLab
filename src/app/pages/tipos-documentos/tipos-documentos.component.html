@@ -7,7 +7,7 @@
   <div class="options">
     <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre"class="input">
     <mat-checkbox class="example-margin" (change)="changeActivo($event)">Activo</mat-checkbox>
-    <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="onClickAdd()">
+    <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="onClickAdd()" *appIsGranted="[roles.ADMIN]">
       <mat-icon>add</mat-icon>
     </button>
   </div>
