@@ -29,7 +29,7 @@ export class HomeComponent {
   totalCount: number = 0;
   filterValue!:string;
   activoValue:null | boolean = null;
-  
+  username: string = ''
 
 
   private paginationObj = 
@@ -55,7 +55,8 @@ export class HomeComponent {
   ngOnInit(): void {
     this.loading = false;
     this.getLlamados()
-
+    this.username = this._authSrv.userValue.nombre
+    console.log(this.username)
     // this._estados.listAll().subscribe(data =>{
     //   this.areasArray = data.list;
     //   console.log(this.areasArray)
@@ -86,8 +87,10 @@ export class HomeComponent {
     //   offset: offset,
     //   
     // }
-    console.log(this._authSrv.userValue?.idUsuario)
-    this.paginationObj.filters.personaTribunalId = this._authSrv.userValue?.idUsuario;
+    console.log(this._authSrv.userValue.personaId)
+    
+    this.paginationObj.filters.personaTribunalId = this._authSrv.userValue?.personaId;
+    console.log(this.paginationObj)
     this._llamados.list(this.paginationObj).subscribe(
       response => {
         this.dataSource = response.list;
