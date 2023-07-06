@@ -83,6 +83,19 @@ export class HomeComponent {
     if(!this.personaId){
       return;
     }
+
+    const pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    const pageSize = this.pageEvent ? this.pageEvent.pageSize : 10;
+    const offset = pageIndex * pageSize;
+
+    this.paginationObj = 
+    {
+      ...this.paginationObj,
+      limit: pageSize,
+      offset: offset,
+      
+    }
+
     this.paginationObj.filters.personaTribunalId = this.personaId;
     console.log(this.paginationObj)
     this._llamados.list(this.paginationObj).subscribe(
