@@ -3,7 +3,7 @@
   </div>
   
   <div class="container">
-    <div class="superior">
+    <div class="superior" *appIsGranted="[roles.ADMIN]">
       <button mat-raised-button color="primary" (click)="onClickAdd()">
         <mat-icon>add</mat-icon>
         Agregar nuevo llamado

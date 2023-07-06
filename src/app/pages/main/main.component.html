@@ -46,8 +46,8 @@
                 </button>
             </mat-list-item>
 
-            <mat-list-item routerLink="/llamados" class="list-item">
-                <button mat-menu-item>
+            <mat-list-item routerLink="/llamados" class="list-item" *appIsGranted="[roles.ADMIN]">
+                <button mat-menu-item> 
                     <mat-icon>chrome_reader_mode</mat-icon><span>Llamados</span>
                 </button>
             </mat-list-item>

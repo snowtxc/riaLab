@@ -47,6 +47,7 @@ export class LlamadosComponent implements OnInit {
 
   }
 
+    roles: typeof Role = Role;
 
   ngOnInit(): void {
     this.getLlamados();
