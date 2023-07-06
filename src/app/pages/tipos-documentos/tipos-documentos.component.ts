@@ -168,7 +168,7 @@ export class TiposDocumentosComponent implements OnInit{
             duration: 2000,
             panelClass: ['red-snackbar'], 
           });
-          this.table.renderRows()
+          this.getTiposDeDocumento();
 
         }, error => {
           console.log(error)

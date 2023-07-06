@@ -7,7 +7,10 @@
     margin: 10px;
 }
 
-
+.mat-success {
+    background-color: green !important;
+    color: #fff;
+}
 
 
 .btnContainer{
@@ -24,4 +27,9 @@
 
 .cardInside{
     margin: 1rem 0px 0px 0px;
+}
+
+.headContainer{
+    display: flex !important;
+    justify-content: space-between !important;
 }
